@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class PlayerInfo
 {
@@ -90,6 +91,9 @@ public class Player : MonoBehaviour
     
     [SerializeField] private GameObject model;
 
+    [SerializeField] private Animator buttom;
+    [SerializeField] private Animator top;
+
     [SerializeField] private Transform SlotLA;
     [SerializeField] private Transform SlotRA;
 
@@ -114,6 +118,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    private PillowState currentPlayerState;
     private List<Pillow> Pillows = new List<Pillow>();
     private Queue<Pillow> Ammo = new Queue<Pillow>();
     private float emPower = 0;
@@ -161,6 +166,8 @@ public class Player : MonoBehaviour
                 Pillow pillow = Ammo.Dequeue();
                 pillow.Throw(model.transform.forward, model.transform.up, (emPower - 0.08f + 1) * powerThrowForward, (emPower + 1) * powerThrowUpper);
                 pillow.transform.parent = transform.parent;
+                top.SetInteger("CurrentState", 3);
+                StartCoroutine(ThrowFinish());
                 emPower = 0;
                 NumPillowsHeld--;
             }
@@ -208,6 +215,10 @@ public class Player : MonoBehaviour
         moveDirection.y = moveDirection.y - (gravity * Time.fixedDeltaTime);
 
         // Move the controller
+        if (Input.GetAxis("Horizontal") + Input.GetAxis("Vertical") != 0 ) {
+            top.SetFloat("Speed", speed);
+            buttom.SetFloat("Speed", speed);
+        }
         controller.Move(moveDirection * speed * Time.fixedDeltaTime);
     }
 
@@ -224,6 +235,8 @@ public class Player : MonoBehaviour
 
         if (Pillows.Count > 0)
         {
+            top.SetInteger("CurrentState", 2);
+            StartCoroutine(PickFinish());
             Pillow pillow = Pillows[0];
             pillow.transform.parent = NumPillowsHeld++ == 0 ? SlotLA : SlotRA;
             pillow.transform.localPosition = Vector3.zero;
@@ -232,6 +245,16 @@ public class Player : MonoBehaviour
             pillow.Pick(gameObject);
             Ammo.Enqueue(pillow);
         }
+    }
+    IEnumerator PickFinish() {
+        yield return new WaitForSeconds(1f);
+        top.SetInteger("CurrentState", 0);
+    }
+
+    IEnumerator ThrowFinish()
+    {
+        yield return new WaitForSeconds(1f);
+        top.SetInteger("CurrentState", 0);
     }
 
     void OnTriggerEnter(Collider other)
