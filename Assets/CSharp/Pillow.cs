@@ -13,10 +13,11 @@ public class Pillow : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update (){
-        if (Picked) {
-            // pillow follow
-            transform.position = Vector3.Lerp(transform.position, holder.transform.position, Time.time);
+	void FixedUpdate (){
+        // pillow follow
+        if (Picked && Vector3.Distance(transform.position, holder.transform.position) > 2f) {
+            //print(Vector3.Distance(transform.position, holder.transform.position));
+            transform.position = Vector3.Lerp(transform.position, holder.transform.position, 0.1f);
         }
     }
 
@@ -25,9 +26,9 @@ public class Pillow : MonoBehaviour {
         holder = player;
     }
 
-    void OnCollisionEnter(Collision other)
+    void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.tag == "Player")
         {
             if (Throwed)
             {

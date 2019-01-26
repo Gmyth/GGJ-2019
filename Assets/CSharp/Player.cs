@@ -29,7 +29,7 @@ public class Player : MonoBehaviour {
 
     private Vector3 moveDirection = Vector3.zero;
     private CharacterController controller;
-
+    private bool oldTriggerHeldPick;
     void Start()
     {
         numPillowHold = 0;
@@ -58,20 +58,22 @@ public class Player : MonoBehaviour {
                 moveDirection.y = jumpSpeed;
             }
         }
-        if (Input.GetButton("Pick"))
+        bool newTriggerHeldPick = Input.GetAxis("Pick") > 0f;
+        if(!oldTriggerHeldPick == newTriggerHeldPick)
         {
             if (numPillowHold >= 2)
             {
                 // exceed the number that one player can hold 
                 ThrowDrop();
             }
-            else {
-                print("Pick!");
+            else
+            {
                 PickUp();
             }
         }
+        oldTriggerHeldPick = newTriggerHeldPick;
 
-        if (Input.GetButton("Throw") && emPower < 0.1f)
+        if (Input.GetAxis("Throw")>0.1f && emPower < 0.1f)
         {
             if (numPillowHold > 0) {
                 // start to empower the throw
@@ -107,12 +109,11 @@ public class Player : MonoBehaviour {
                 }
             }
     }
-    void OnCollisionEnter(Collision other)
+    void OnTriggerEnter(Collider other)
     {
-        print("pillow found");
-        if (other.gameObject.tag == "Pillow") {
+        if (other.tag == "Pillow") {
             print("pillow found");
-            var temp = other.gameObject.GetComponent<Pillow>();
+            var temp = other.GetComponent<Pillow>();
             if (temp.Throwed){
                 // doing dmg TODO
 
@@ -123,11 +124,11 @@ public class Player : MonoBehaviour {
         }   
     }
 
-    void OnCollisionExit(Collision other)
+    void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Pillow")
+        if (other.tag == "Pillow")
         {
-            var temp = other.gameObject.GetComponent<Pillow>();
+            var temp = other.GetComponent<Pillow>();
             if (Pillows.Contains(temp)) { 
                 // sign out queue
                 Pillows.Remove(temp);
