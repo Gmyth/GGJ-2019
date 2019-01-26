@@ -51,8 +51,6 @@ public class Pillow : MonoBehaviour {
         currentState = PillowState.Picked;
 
         GetComponent<Rigidbody>().isKinematic = true;
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
 
         holder = player;
     }
