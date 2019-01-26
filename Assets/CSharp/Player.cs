@@ -18,23 +18,28 @@ public class Player : MonoBehaviour {
 
     [SerializeField] private float minThrowPower;
     [SerializeField] private float maxThrowPower;
+    [SerializeField] private float powerToAddEachFrame;
 
+    [SerializeField] private float powerThrowForward;
+    [SerializeField] private float powerThrowUpper;
     /// <summary>
     /// The number of pillows carried by the player
     /// </summary
     private int numPillowHold;
     private List<Pillow> Pillows;
-    private Pillow[] Ammo;
+    private List<Pillow> Ammo;
     private float emPower;
 
     private Vector3 moveDirection = Vector3.zero;
     private CharacterController controller;
     private bool oldTriggerHeldPick;
+    private bool oldTriggerHeldThrow;
+
     void Start()
     {
         numPillowHold = 0;
         controller = GetComponent<CharacterController>();
-        Ammo = new Pillow[2];
+        Ammo = new List<Pillow>();
         Pillows = new List<Pillow>();
         emPower = 0.0f;
         // let the gameObject fall down
@@ -72,23 +77,32 @@ public class Player : MonoBehaviour {
             }
         }
         oldTriggerHeldPick = newTriggerHeldPick;
-
-        if (Input.GetAxis("Throw")>0.1f && emPower < 0.1f)
+        bool newTriggerHeldThrow = Input.GetAxis("Throw") > 0f;
+        if (newTriggerHeldThrow != oldTriggerHeldThrow)
         {
-            if (numPillowHold > 0) {
+            if (newTriggerHeldThrow && numPillowHold > 0)
+            {
                 // start to empower the throw
                 emPower = minThrowPower;
             }
-            // do nothing if no pillow
+            emPower = emPower < maxThrowPower ? emPower + powerToAddEachFrame : emPower; ;
         }
-        emPower = emPower < maxThrowPower? emPower + 0.01f : emPower;
-        if (Input.GetKeyUp("joystick button 5") && emPower > 0.1f)
-        {
-            // key released throw
-            emPower = 0.0f;
-            // throw!!!!
-            // TODO: pillow class
+
+        if (oldTriggerHeldThrow != newTriggerHeldThrow && !newTriggerHeldThrow) {
+            /// throw
+            if (Ammo.Count!=0)
+            {
+                Ammo[0].Throw(transform.forward, transform.up, (emPower - 0.08f + 1) * powerThrowForward, (emPower + 1) * powerThrowUpper);
+                emPower = 0.0f;
+                oldTriggerHeldThrow = false;
+                Ammo.RemoveAt(0);
+            } 
+          
         }
+        else {
+          oldTriggerHeldThrow = newTriggerHeldThrow;
+        }
+        
         // Apply gravity
         moveDirection.y = moveDirection.y - (gravity * Time.deltaTime);
 
@@ -104,6 +118,7 @@ public class Player : MonoBehaviour {
                 var temp = Pillows[i];
                 if (!temp.Picked) {
                     temp.Pick(gameObject);
+                    Ammo.Add(temp);
                     numPillowHold++;
                     break;
                 }
@@ -112,7 +127,6 @@ public class Player : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Pillow") {
-            print("pillow found");
             var temp = other.GetComponent<Pillow>();
             if (temp.Throwed){
                 // doing dmg TODO

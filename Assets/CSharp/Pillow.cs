@@ -26,6 +26,15 @@ public class Pillow : MonoBehaviour {
         holder = player;
     }
 
+    public void Throw(Vector3 forward, Vector3 Up,float ForwardForce, float UpperForce)
+    {
+        GetComponent<Rigidbody>().velocity = (forward * 10);
+       // GetComponent<Rigidbody>().AddForce(Up * 200);
+        holder = null;
+        Picked = false;
+        Throwed = true;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
