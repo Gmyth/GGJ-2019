@@ -89,7 +89,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float powerThrowUpper;
     
     
-    [SerializeField] private GameObject model;
+    public GameObject model;
 
     [SerializeField] private Animator buttom;
     [SerializeField] private Animator top;
@@ -166,6 +166,13 @@ public class Player : MonoBehaviour
                 Pillow pillow = Ammo.Dequeue();
                 pillow.Throw(model.transform.forward, model.transform.up, (emPower - 0.08f + 1) * powerThrowForward, (emPower + 1) * powerThrowUpper);
                 pillow.transform.parent = transform.parent;
+                if (Ammo.Count > 0)
+                {
+                    Pillow pillowTemp = Ammo.Peek();
+                    pillowTemp.transform.parent = SlotLA;
+                    pillowTemp.transform.localPosition = Vector3.zero;
+                    pillowTemp.transform.localRotation = Quaternion.identity;
+                }
                 top.SetInteger("CurrentState", 3);
                 StartCoroutine(ThrowFinish());
                 emPower = 0;
@@ -182,6 +189,7 @@ public class Player : MonoBehaviour
             {
                 Ammo.Peek().ReadyToGo();
                 emPower = minThrowPower;
+                top.SetInteger("CurrentState", 1);
             }
         }
 
@@ -217,7 +225,7 @@ public class Player : MonoBehaviour
         // Move the controller
         if (Input.GetAxis("Horizontal") + Input.GetAxis("Vertical") != 0 ) {
             top.SetFloat("Speed", speed);
-            buttom.SetFloat("Speed", speed);
+            //buttom.SetFloat("Speed", speed);
         }
         controller.Move(moveDirection * speed * Time.fixedDeltaTime);
     }
@@ -246,6 +254,17 @@ public class Player : MonoBehaviour
             Ammo.Enqueue(pillow);
         }
     }
+    public void Hurt(bool facing) {
+        top.SetBool("Hurt", true);
+        top.SetBool("HurtFromBack", !facing);
+        StartCoroutine(Hurt());
+    }
+    IEnumerator Hurt()
+    {
+        yield return new WaitForSeconds(1f);
+        top.SetBool("Hurt", false);
+    }
+
     IEnumerator PickFinish() {
         yield return new WaitForSeconds(1f);
         top.SetInteger("CurrentState", 0);

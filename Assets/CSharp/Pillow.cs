@@ -32,7 +32,7 @@ public class Pillow : MonoBehaviour {
 
 	    if (currentState == PillowState.Aimed)
 	    {
-            GetComponent<Rigidbody>().position = holder.transform.position + holder.transform.forward + new Vector3(0, 2, 0);
+            //GetComponent<Rigidbody>().position = holder.transform.position + holder.transform.forward + new Vector3(0, 2, 0);
 	    }
 	}
 
@@ -61,9 +61,7 @@ public class Pillow : MonoBehaviour {
 
         GetComponent<Rigidbody>().isKinematic = false;
 
-        GetComponent<Rigidbody>().AddForce(forward * ForwardForce + Up * UpperForce);
-
-        holder = null;
+        GetComponent<Rigidbody>().velocity = forward * ForwardForce + Up * UpperForce;
 
         GetComponent<Rigidbody>().useGravity = true;
         // GetComponent<MeshCollider>().enabled = true;
@@ -78,8 +76,25 @@ public class Pillow : MonoBehaviour {
             if (currentState == PillowState.Throwed)
             {
                 // doing dmg TODO
-                currentState = PillowState.Idle;
+                if (other.GetComponent<Player>().model == holder){
+                    Vector3 forward = transform.forward;
+                    Vector3 toOther = (other.transform.position - transform.position).normalized;
+                    if (Vector3.Dot(forward, toOther) < 0.7f)
+                    {
+                        other.GetComponent<Player>().Hurt(false);
+                    }
+                    else
+                    {
+                        other.GetComponent<Player>().Hurt(true);
+                    }
+                    currentState = PillowState.Idle;
+                    holder = null;
+                }
             }
+        }
+        if (other.tag == "Terrian") {
+            currentState = PillowState.Idle;
+            holder = null;
         }
     }
 }
