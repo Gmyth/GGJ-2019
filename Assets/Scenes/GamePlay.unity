@@ -408,9 +408,9 @@ GameObject:
   m_Component:
   - component: {fileID: 275304765}
   - component: {fileID: 275304764}
+  - component: {fileID: 275304761}
   - component: {fileID: 275304763}
   - component: {fileID: 275304762}
-  - component: {fileID: 275304761}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -432,22 +432,21 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 120
+  m_Constraints: 124
   m_CollisionDetection: 0
 --- !u!143 &275304762
 CharacterController:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 143138106356761620, guid: b0efcd192c1e65340b8987bb4d4cbee6,
-    type: 2}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 275304760}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.8
+  m_Height: 2
   m_Radius: 0.5
-  m_SlopeLimit: 180
+  m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
@@ -468,9 +467,9 @@ MonoBehaviour:
   jumpSpeed: 4
   gravity: 6
   minThrowPower: 0.1
-  maxThrowPower: 1
-  powerToAddEachFrame: 0.05
-  powerThrowForward: 75
+  maxThrowPower: 1.5
+  powerToAddEachFrame: 0.01
+  powerThrowForward: 15
   powerThrowUpper: 5
   model: {fileID: 616919121}
 --- !u!136 &275304764

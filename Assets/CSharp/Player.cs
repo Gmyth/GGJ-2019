@@ -124,17 +124,18 @@ public class Player : MonoBehaviour
         Id = playerInfo.id;
         Name = playerInfo.Name;
         Score = 0;
-
         numPillowHold = 0;
+    }
+
+    private void Start()
+    {
         controller = GetComponent<CharacterController>();
         Ammo = new List<Pillow>();
         Pillows = new List<Pillow>();
         emPower = 0.0f;
-        // let the gameObject fall down
-        gameObject.transform.position = new Vector3(0, 5, 0);
-
         OnScoreChange = new EventOnDataChange<int>();
         OnNumPillowsHeldChange = new EventOnDataChange<int>();
+        // let the gameObject fall down
     }
 
     void FixedUpdate()
@@ -202,7 +203,6 @@ public class Player : MonoBehaviour
             /// throw
             if (Ammo.Count!=0)
             {
-                print("emPower" + emPower);
                 Ammo[0].Throw( model.transform.forward, model.transform.up, (emPower - 0.08f + 1) * powerThrowForward, (emPower + 1) * powerThrowUpper);
                 emPower = 0.0f;
                 oldTriggerHeldThrow = false;
