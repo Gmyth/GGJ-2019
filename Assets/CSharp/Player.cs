@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class PlayerInfo
 {
@@ -86,6 +87,9 @@ public class Player : MonoBehaviour
     
     [SerializeField] private GameObject model;
 
+    [SerializeField] private Animator buttom;
+    [SerializeField] private Animator top;
+
     private int numPillowHold;
     /// <summary>
     /// The number of pillows carried by the player
@@ -110,6 +114,7 @@ public class Player : MonoBehaviour
     private List<Pillow> Pillows;
     private List<Pillow> Ammo;
     private float emPower;
+    private PillowState currentPlayerState;
 
     private Vector3 moveDirection = Vector3.zero;
     private CharacterController controller;
@@ -205,6 +210,8 @@ public class Player : MonoBehaviour
             {
                 Ammo[0].Throw( model.transform.forward, model.transform.up, (emPower - 0.08f + 1) * powerThrowForward, (emPower + 1) * powerThrowUpper);
                 emPower = 0.0f;
+                top.SetInteger("CurrentState", 3);
+                StartCoroutine(ThrowFinish());
                 oldTriggerHeldThrow = false;
                 Ammo.RemoveAt(0);
                 NumPillowsHeld--;
@@ -219,6 +226,10 @@ public class Player : MonoBehaviour
         moveDirection.y = moveDirection.y - (gravity * Time.deltaTime);
 
         // Move the controller
+        if (Input.GetAxis("Horizontal") + Input.GetAxis("Vertical") != 0 ) {
+            top.SetFloat("Speed", speed);
+            buttom.SetFloat("Speed", speed);
+        }
         controller.Move(moveDirection * Time.deltaTime);
     }
 
@@ -236,10 +247,22 @@ public class Player : MonoBehaviour
             {
                 temp.Pick(gameObject);
                 Ammo.Add(temp);
+                top.SetInteger("CurrentState", 2);
+                StartCoroutine(PickFinish());
                 NumPillowsHeld++;
                 break;
             }
         }
+    }
+    IEnumerator PickFinish() {
+        yield return new WaitForSeconds(1f);
+        top.SetInteger("CurrentState", 0);
+    }
+
+    IEnumerator ThrowFinish()
+    {
+        yield return new WaitForSeconds(1f);
+        top.SetInteger("CurrentState", 0);
     }
 
     void OnTriggerEnter(Collider other)
