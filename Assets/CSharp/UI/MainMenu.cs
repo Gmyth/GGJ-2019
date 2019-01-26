@@ -23,20 +23,22 @@ public class MainMenu : UIWindow
 
     private void MoveIndexUp()
     {
-        if (currentIndex < maxIndex - 1)
+        if (currentIndex > 0)
         {
+            Debug.Log("MoveIndexUp");
             Dehighlight(currentIndex);
-            currentIndex = Mathf.Min(currentIndex + 1, maxIndex);
+            currentIndex = Mathf.Max(currentIndex - 1, 0);
             Highlight(currentIndex);
         }
     }
 
     private void MoveIndexDown()
     {
-        if (currentIndex > 0)
+        if (currentIndex < maxIndex)
         {
+            Debug.Log("MoveIndexDown");
             Dehighlight(currentIndex);
-            currentIndex = Mathf.Max(currentIndex - 1, 0);
+            currentIndex = Mathf.Min(currentIndex + 1, maxIndex);
             Highlight(currentIndex);
         }
     }
@@ -60,23 +62,36 @@ public class MainMenu : UIWindow
 
     private void Update()
     {
-        if (Input.GetKeyUp("Up"))
+        float verticalInput = Input.GetAxis("Vertical");
+
+        if (verticalInput <= 0)
             isUpButtonUp = true;
         else if (isUpButtonUp)
-            MoveIndexUp();
+        {
+            isUpButtonUp = false;
 
-        if (Input.GetKeyUp("Down"))
+            MoveIndexUp();
+        }
+
+        if (verticalInput >= 0)
             isDownButtonUp = true;
         else if (isDownButtonUp)
-            MoveIndexDown();
+        {
+            isDownButtonUp = false;
 
-        if (Input.GetKeyUp("Submit"))
+            MoveIndexDown();
+        }
+
+        if (Input.GetAxis("Submit") == 0)
             isSubmitButtonUp = true;
         else if (isSubmitButtonUp)
+        {
+            isSubmitButtonUp = false;
+
             switch (currentIndex)
             {
                 case 0:
-                    UIManager.Singleton.Open("MatchSetup");
+                    GameManager.Singleton.SetUpNewMatch();
                     Close();
                     break;
 
@@ -84,5 +99,6 @@ public class MainMenu : UIWindow
                     GameManager.Singleton.QuitGame();
                     break;
             }
+        }
     }
 }

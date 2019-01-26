@@ -7,6 +7,7 @@ public enum GameState : int
 {
     Start = 0,
     MainMenu,
+    MatchSetup,
     Match,
     End,
 }
@@ -16,6 +17,8 @@ public enum GameState : int
 /// </summary>
 public class GameManager : MonoBehaviour
 {
+    PlayerInfo[] players;
+
     /// <summary>
     /// The unique instance
     /// </summary>
@@ -76,6 +79,18 @@ public class GameManager : MonoBehaviour
 
                 switch (currentGameState)
                 {
+                    case GameState.MainMenu:
+                        UIManager.Singleton.Open("MainMenu");
+                        break;
+
+                    case GameState.MatchSetup:
+                        int numPlayers = Input.GetJoystickNames().Length;
+                        players = new PlayerInfo[numPlayers];
+                        for (int id = 0; id < numPlayers; id++)
+                            players[id] = new PlayerInfo(id, "Player " + (id + 1));
+                        UIManager.Singleton.Open("MatchSetup", UIManager.UIMode.Default, players);
+                        break;
+
                     case GameState.End:
                         Application.Quit();
                         break;
@@ -85,6 +100,16 @@ public class GameManager : MonoBehaviour
     }
 
     private GameManager() {}
+
+    public void SetUpNewMatch()
+    {
+        CurrentGameState = GameState.MatchSetup;
+    }
+
+    public void StartNewMatch()
+    {
+
+    }
 
     /// <summary>
     /// Quit the game
