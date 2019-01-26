@@ -193,6 +193,7 @@ public class Player : MonoBehaviour
 
     }
 
+
     public void PickUp() {
             for (int i = 0; i < Pillows.Count; i++) {
                 var temp = Pillows[i];
@@ -202,7 +203,6 @@ public class Player : MonoBehaviour
                     numPillowHold++;
                     break;
                 }
-
         }
     }
 
