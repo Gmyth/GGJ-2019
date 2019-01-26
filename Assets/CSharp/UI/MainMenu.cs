@@ -25,7 +25,6 @@ public class MainMenu : UIWindow
     {
         if (currentIndex > 0)
         {
-            Debug.Log("MoveIndexUp");
             Dehighlight(currentIndex);
             currentIndex = Mathf.Max(currentIndex - 1, 0);
             Highlight(currentIndex);
@@ -36,7 +35,6 @@ public class MainMenu : UIWindow
     {
         if (currentIndex < maxIndex)
         {
-            Debug.Log("MoveIndexDown");
             Dehighlight(currentIndex);
             currentIndex = Mathf.Min(currentIndex + 1, maxIndex);
             Highlight(currentIndex);
@@ -63,8 +61,8 @@ public class MainMenu : UIWindow
     private void Update()
     {
         float verticalInput = Input.GetAxis("Vertical");
-
-        if (verticalInput <= 0)
+        Debug.Log(verticalInput);
+        if (verticalInput <= 0.5f)
             isUpButtonUp = true;
         else if (isUpButtonUp)
         {
@@ -73,7 +71,7 @@ public class MainMenu : UIWindow
             MoveIndexUp();
         }
 
-        if (verticalInput >= 0)
+        if (verticalInput >= -0.5f)
             isDownButtonUp = true;
         else if (isDownButtonUp)
         {
