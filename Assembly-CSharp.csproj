@@ -61,6 +61,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CSharp\LevelMechanics\Bed.cs" />
+    <Compile Include="Assets\CSharp\LevelMechanics\LevelEvent.cs" />
+    <Compile Include="Assets\CSharp\LevelMechanics\LevelEventManager.cs" />
+    <Compile Include="Assets\CSharp\LevelMechanics\MigrateEvent.cs" />
+    <Compile Include="Assets\CSharp\LevelMechanics\SwimmingPool.cs" />
+    <Compile Include="Assets\CSharp\LevelMechanics\WindEvent.cs" />
+    <Compile Include="Assets\CSharp\LevelMechanics\Yak.cs" />
     <Compile Include="Assets\CSharp\Pillow.cs" />
     <Compile Include="Assets\CSharp\Player.cs" />
     <Compile Include="Assets\CSharp\UI\UIManager.cs" />
