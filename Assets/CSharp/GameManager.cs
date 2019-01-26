@@ -17,7 +17,8 @@ public enum GameState : int
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    PlayerInfo[] players;
+    PlayerInfo[] playerInfos;
+    Player[] players;
 
     /// <summary>
     /// The unique instance
@@ -59,9 +60,16 @@ public class GameManager : MonoBehaviour
             else
             {
                 // Before leaving the previous state
-                //switch (currentGameState)
-                //{
-                //}
+                switch (currentGameState)
+                {
+                    case GameState.MainMenu:
+                        UIManager.Singleton.Close("MainMenu");
+                        break;
+
+                    case GameState.MatchSetup:
+                        UIManager.Singleton.Close("MatchSetup");
+                        break;
+                }
 
 #if UNITY_EDITOR
                 LogUtility.PrintLogFormat("GameManager", "Made a transition to {0}.", value);
@@ -84,11 +92,32 @@ public class GameManager : MonoBehaviour
                         break;
 
                     case GameState.MatchSetup:
-                        int numPlayers = Input.GetJoystickNames().Length;
-                        players = new PlayerInfo[numPlayers];
-                        for (int id = 0; id < numPlayers; id++)
-                            players[id] = new PlayerInfo(id, "Player " + (id + 1));
-                        UIManager.Singleton.Open("MatchSetup", UIManager.UIMode.Default, players);
+                        {
+                            int numPlayers = Input.GetJoystickNames().Length;
+                        
+                            playerInfos = new PlayerInfo[numPlayers];
+                            for (int id = 0; id < numPlayers; id++)
+                                playerInfos[id] = new PlayerInfo(id, "Player " + (id + 1));
+
+                            UIManager.Singleton.Open("MatchSetup", UIManager.UIMode.Default, playerInfos);
+                        }
+                        break;
+
+                    case GameState.Match:
+                        {
+                            int numPlayers = playerInfos.Length;
+                        
+                            players = new Player[numPlayers];
+                            Player player;
+                            for (int id = 0; id < numPlayers; id++)
+                            {
+                                player = Instantiate(ResourceUtility.GetPrefab<Player>("Player"));
+                                player.Initialize(playerInfos[id]);
+                                players[id] = player;
+                            }
+
+                            UIManager.Singleton.Open("HUD", UIManager.UIMode.Permenent, players);
+                        }
                         break;
 
                     case GameState.End:
@@ -108,7 +137,7 @@ public class GameManager : MonoBehaviour
 
     public void StartNewMatch()
     {
-
+        CurrentGameState = GameState.Match;
     }
 
     /// <summary>
