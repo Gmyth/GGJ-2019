@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerWidget : UIWidget
 {
-    [SerializeField] private Text name;
+    [SerializeField] private Text playerName;
     [SerializeField] private Text scoreNumber;
     [SerializeField] private Transform pillowIconList;
 
@@ -28,7 +28,7 @@ public class PlayerWidget : UIWidget
 
     private void UpdateAll()
     {
-        name.text = player.Name;
+        playerName.text = player.Name;
 
         UpdateScore(player.Score);
         UpdatePillows(player.NumPillowsHeld);

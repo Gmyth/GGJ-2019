@@ -525,7 +525,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69d7a48922070ab44ba1b161bc21ed06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: {fileID: 114675909980312662}
+  playerName: {fileID: 114675909980312662}
   scoreNumber: {fileID: 114956477103002174}
   pillowIconList: {fileID: 224241694138112420}
 --- !u!114 &114038926310236356
@@ -1015,7 +1015,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69d7a48922070ab44ba1b161bc21ed06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: {fileID: 114432027611637910}
+  playerName: {fileID: 114432027611637910}
   scoreNumber: {fileID: 114099447454286084}
   pillowIconList: {fileID: 224844206117747188}
 --- !u!114 &114662127914160454
@@ -1062,7 +1062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69d7a48922070ab44ba1b161bc21ed06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: {fileID: 114377505829138996}
+  playerName: {fileID: 114377505829138996}
   scoreNumber: {fileID: 114547642441620760}
   pillowIconList: {fileID: 224035493592807548}
 --- !u!114 &114675909980312662
@@ -1218,7 +1218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69d7a48922070ab44ba1b161bc21ed06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: {fileID: 114444846855432010}
+  playerName: {fileID: 114444846855432010}
   scoreNumber: {fileID: 114662127914160454}
   pillowIconList: {fileID: 224768214339140148}
 --- !u!114 &114919526765586492
