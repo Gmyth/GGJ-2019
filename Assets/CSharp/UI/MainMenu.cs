@@ -6,28 +6,28 @@ public class MainMenu : UIWindow
 {
     [SerializeField] private Transform list;
 
-    private List<Text> highlights = new List<Text>();
+    private List<GameObject> selections = new List<GameObject>();
 
     private int currentIndex = 0;
     private int maxIndex;
 
-    private void Highlight(int index)
+    private void Select(int index)
     {
-        highlights[index].color = Color.red;
+        selections[index].SetActive(true);
     }
 
-    private void Dehighlight(int index)
+    private void Deselect(int index)
     {
-        highlights[index].color = Color.white;
+        selections[index].SetActive(false);
     }
 
     private void MoveIndexUp()
     {
         if (currentIndex > 0)
         {
-            Dehighlight(currentIndex);
+            Deselect(currentIndex);
             currentIndex = Mathf.Max(currentIndex - 1, 0);
-            Highlight(currentIndex);
+            Select(currentIndex);
         }
     }
 
@@ -35,9 +35,9 @@ public class MainMenu : UIWindow
     {
         if (currentIndex < maxIndex)
         {
-            Dehighlight(currentIndex);
+            Deselect(currentIndex);
             currentIndex = Mathf.Min(currentIndex + 1, maxIndex);
-            Highlight(currentIndex);
+            Select(currentIndex);
         }
     }
 
@@ -51,11 +51,11 @@ public class MainMenu : UIWindow
 
         for (int i = 0; i <= maxIndex; i++)
         {
-            highlights.Add(list.GetChild(i).GetComponent<Text>());
-            Dehighlight(i);
+            selections.Add(list.GetChild(i).GetChild(0).gameObject);
+            Deselect(i);
         }
 
-        Highlight(currentIndex);
+        Select(currentIndex);
     }
 
     private void Update()
