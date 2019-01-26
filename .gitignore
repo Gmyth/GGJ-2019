@@ -49,3 +49,7 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+*.log
+*.ide-wal
+*.ide-shm
+*.ide
