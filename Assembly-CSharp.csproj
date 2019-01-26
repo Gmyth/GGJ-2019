@@ -61,6 +61,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CSharp\Events.cs" />
+    <Compile Include="Assets\CSharp\GameManager.cs" />
     <Compile Include="Assets\CSharp\LevelMechanics\Bed.cs" />
     <Compile Include="Assets\CSharp\LevelMechanics\LevelEvent.cs" />
     <Compile Include="Assets\CSharp\LevelMechanics\LevelEventManager.cs" />
@@ -70,17 +72,14 @@
     <Compile Include="Assets\CSharp\LevelMechanics\Yak.cs" />
     <Compile Include="Assets\CSharp\Pillow.cs" />
     <Compile Include="Assets\CSharp\Player.cs" />
-    <Compile Include="Assets\CSharp\UI\UIManager.cs" />
+    <Compile Include="Assets\CSharp\UI\HUD.cs" />
+    <Compile Include="Assets\CSharp\UI\MainMenu.cs" />
+    <Compile Include="Assets\CSharp\UI\MatchSetup.cs" />
     <Compile Include="Assets\CSharp\UI\UIWindow.cs" />
-    <Reference Include="Unity.ProBuilder.AddOns.Editor">
-      <HintPath>D:/GGJ-2019/Library/ScriptAssemblies/Unity.ProBuilder.AddOns.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ProGrids">
-      <HintPath>D:/GGJ-2019/Library/ScriptAssemblies/Unity.ProGrids.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ProGrids.Editor">
-      <HintPath>D:/GGJ-2019/Library/ScriptAssemblies/Unity.ProGrids.Editor.dll</HintPath>
-    </Reference>
+    <Compile Include="Assets\CSharp\UI\Widget\PlayerInfoWidget.cs" />
+    <Compile Include="Assets\CSharp\UI\Widget\PlayerWidget.cs" />
+    <Compile Include="Assets\CSharp\UI\Widget\UIWidget.cs" />
+    <Compile Include="Assets\CSharp\UIManager.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/GGJ-2019/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
@@ -92,6 +91,15 @@
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>D:/GGJ-2019/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ProBuilder.AddOns.Editor">
+      <HintPath>D:/GGJ-2019/Library/ScriptAssemblies/Unity.ProBuilder.AddOns.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ProGrids">
+      <HintPath>D:/GGJ-2019/Library/ScriptAssemblies/Unity.ProGrids.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ProGrids.Editor">
+      <HintPath>D:/GGJ-2019/Library/ScriptAssemblies/Unity.ProGrids.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

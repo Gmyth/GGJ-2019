@@ -36,6 +36,7 @@ public class MigrateEvent : LevelEvent {
             GameObject go = Instantiate(yakPrefab, spawnPoint.position, Quaternion.identity);
             go.GetComponent<Yak>().SetMigrateDirection(spawnPoint.forward);
             go.transform.LookAt(spawnPoint.position + spawnPoint.forward);
+            go.SetActive(true);
             yield return new WaitForSeconds(createTimePeriod);
         }
     }

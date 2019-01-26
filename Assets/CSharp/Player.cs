@@ -71,9 +71,11 @@ public class Player : MonoBehaviour
     }
 
     // Use this for initialization
-    [SerializeField]private float speed;
-    [SerializeField]private float jumpSpeed;
-    [SerializeField]private float gravity;
+    [SerializeField] private float speed;
+    // Record default speed
+    private float defaultSpeed;
+    [SerializeField] private float jumpSpeed;
+    [SerializeField] private float gravity;
 
 
     [SerializeField] private float minThrowPower;
@@ -136,6 +138,8 @@ public class Player : MonoBehaviour
         OnScoreChange = new EventOnDataChange<int>();
         OnNumPillowsHeldChange = new EventOnDataChange<int>();
         // let the gameObject fall down
+
+        defaultSpeed = speed;
     }
 
     void FixedUpdate()
@@ -242,6 +246,16 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void SetSpeed(float s)
+    {
+        speed = s;
+    }
+
+    public void ResetSpeed()
+    {
+        speed = defaultSpeed;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Pillow") {
@@ -267,4 +281,5 @@ public class Player : MonoBehaviour
             }
         }
     }
+
 }

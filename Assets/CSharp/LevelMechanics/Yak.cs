@@ -39,12 +39,6 @@ public class Yak : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
-        {
-            //Bounce back the player
-            
-        }
-
         if (collision.gameObject.tag == "Pillow")
         {
             //Stop or bounce back the pillow
@@ -56,6 +50,16 @@ public class Yak : MonoBehaviour {
             StopMigrate();
         }
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            //Bounce back the player
+            other.gameObject.GetComponent<Rigidbody>().AddForce(-other.transform.right * bounceForce);
+            Debug.Log(-other.transform.right * bounceForce);
+        }
     }
 
     private void OnDestroy()
