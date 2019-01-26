@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerInfo
 {
@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
         Id = 0;
         Name = "";
         Score = 0;
-        Pillow = 1;
+
         numPillowHold = 0;
         controller = GetComponent<CharacterController>();
         Ammo = new List<Pillow>();
@@ -101,7 +101,6 @@ public class Player : MonoBehaviour
         Id = playerInfo.id;
         Name = playerInfo.Name;
         Score = 0;
-        Pillow = 1;
     }
 
     void FixedUpdate()
