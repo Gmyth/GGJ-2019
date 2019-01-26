@@ -10,7 +10,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>
     </RootNamespace>
-    <ProjectGuid>{DF8B7BC7-C8D8-2AD4-31BC-BDB96B696D7D}</ProjectGuid>
+    <ProjectGuid>{FC01FE44-D7F4-DA83-EE91-2CA8D3F102A6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -80,26 +80,26 @@
     <Compile Include="Assets\CSharp\UI\Widget\PlayerWidget.cs" />
     <Compile Include="Assets\CSharp\UI\Widget\UIWidget.cs" />
     <Compile Include="Assets\CSharp\UIManager.cs" />
-    <Reference Include="Unity.ProBuilder.AddOns.Editor">
-      <HintPath>Z:/IGMProfile/Workspace/GGJ2019/control/Library/ScriptAssemblies/Unity.ProBuilder.AddOns.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ProGrids">
-      <HintPath>Z:/IGMProfile/Workspace/GGJ2019/control/Library/ScriptAssemblies/Unity.ProGrids.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.ProGrids.Editor">
-      <HintPath>Z:/IGMProfile/Workspace/GGJ2019/control/Library/ScriptAssemblies/Unity.ProGrids.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>Z:/IGMProfile/Workspace/GGJ2019/control/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>Z:/IGMProfile/Workspace/GGJ2019/master/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>Z:/IGMProfile/Workspace/GGJ2019/control/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>Z:/IGMProfile/Workspace/GGJ2019/master/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>Z:/IGMProfile/Workspace/GGJ2019/control/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>Z:/IGMProfile/Workspace/GGJ2019/master/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>Z:/IGMProfile/Workspace/GGJ2019/control/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>Z:/IGMProfile/Workspace/GGJ2019/master/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ProBuilder.AddOns.Editor">
+      <HintPath>Z:/IGMProfile/Workspace/GGJ2019/master/Library/ScriptAssemblies/Unity.ProBuilder.AddOns.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ProGrids">
+      <HintPath>Z:/IGMProfile/Workspace/GGJ2019/master/Library/ScriptAssemblies/Unity.ProGrids.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ProGrids.Editor">
+      <HintPath>Z:/IGMProfile/Workspace/GGJ2019/master/Library/ScriptAssemblies/Unity.ProGrids.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -353,7 +353,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Utility.csproj">
-      <Project>{00C0EE55-63EC-27D9-FDCC-3A79237B7320}</Project>
+      <Project>{C2439F79-48BF-A4BD-10C3-08D68A105199}</Project>
       <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
