@@ -17,22 +17,22 @@ public class Pillow : MonoBehaviour {
 	    currentState = PillowState.Idle;
     }
 	
-	// Update is called once per frame
-	void FixedUpdate (){
-        // pillow follow
-        if (currentState == PillowState.Picked && Vector3.Distance(transform.position, holder.transform.position) > 2.5f) {
-            //print(Vector3.Distance(transform.position, holder.transform.position));
-            GetComponent<Rigidbody>().position = Vector3.Lerp(transform.position, holder.transform.position, 0.1f);
-        }
+	void FixedUpdate()
+    {
+        //// pillow follow
+        //if (currentState == PillowState.Picked && Vector3.Distance(transform.position, holder.transform.position) > 2.5f)
+        //{
+        //    GetComponent<Rigidbody>().position = Vector3.Lerp(transform.position, holder.transform.position, 0.1f);
+        //}
 
-	    if (currentState == PillowState.Throwed&&GetComponent<Rigidbody>().velocity.magnitude < 5f)
+        if (currentState == PillowState.Throwed && GetComponent<Rigidbody>().velocity.magnitude < 5f)
 	    {
 	        currentState = PillowState.Idle;
 	    }
 
 	    if (currentState == PillowState.Aimed)
 	    {
-            GetComponent<Rigidbody>().position = holder.transform.position + holder.transform.forward + new Vector3(0,2f,0);
+            GetComponent<Rigidbody>().position = holder.transform.position + holder.transform.forward + new Vector3(0, 2, 0);
 	    }
 	}
 
@@ -42,26 +42,34 @@ public class Pillow : MonoBehaviour {
         //transform.parent = model;
         currentState = PillowState.Aimed;
         GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<MeshCollider>().enabled = false;
+        //GetComponent<MeshCollider>().enabled = false;
         Collider.enabled = false;
     }
 
     public void Pick(GameObject player)
     {
         currentState = PillowState.Picked;
+
+        GetComponent<Rigidbody>().isKinematic = true;
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+
         holder = player;
     }
 
     public void Throw(Vector3 forward, Vector3 Up,float ForwardForce, float UpperForce)
     {
         currentState = PillowState.Throwed;
-        print("direction: " + forward);
-        //GetComponent<Rigidbody>().AddForce(forward * ForwardForce);
-        GetComponent<Rigidbody>().velocity = forward * 2.0f;
-        //GetComponent<Rigidbody>().AddForce(Up * UpperForce);
+
+        GetComponent<Rigidbody>().isKinematic = false;
+
+        GetComponent<Rigidbody>().AddForce(forward * ForwardForce + Up * UpperForce);
+
         holder = null;
+
         GetComponent<Rigidbody>().useGravity = true;
-        GetComponent<MeshCollider>().enabled = true;
+        // GetComponent<MeshCollider>().enabled = true;
+
         Collider.enabled = true; 
     }
 

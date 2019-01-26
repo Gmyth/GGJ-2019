@@ -6,7 +6,7 @@ public class MatchSetup : UIWindow
     [SerializeField] private Transform list;
     private PlayerInfoWidget[] playerWidgets;
 
-    private PlayerInfo[] players;
+    private PlayerInfo[] playerInfos;
     private int numPlayers;
     private HashSet<int> isPlayerReady = new HashSet<int>();
 
@@ -18,8 +18,8 @@ public class MatchSetup : UIWindow
         for (int i = 0; i < numListItems; i++)
             playerWidgets[i] = list.GetChild(i).GetComponent<PlayerInfoWidget>();
 
-        players = (PlayerInfo[])args;
-        numPlayers = players.Length;
+        playerInfos = (PlayerInfo[])args;
+        numPlayers = playerInfos.Length;
 
         int id = 0;
         while (id < numPlayers)
@@ -72,12 +72,11 @@ public class MatchSetup : UIWindow
     {
         for (int i = 0; i < numPlayers; i++)
         {
-            if (Input.GetAxis("Submit_J" + (i + 1)) == 0)
+            if (Input.GetAxis("Submit" + playerInfos[i].controllerId) == 0)
                 isSubmitButtonUp[i] = true;
             else if (isSubmitButtonUp[i])
             {
                 isSubmitButtonUp[i] = false;
-
                 TogglePlayerReadiness(i);
             }
         }
