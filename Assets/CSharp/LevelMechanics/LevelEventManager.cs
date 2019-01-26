@@ -10,7 +10,7 @@ public class LevelEventManager : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
-        TriggerEventWithName("Migrate");
+        //TriggerEventWithName("Migrate");
         TriggerEventWithIndex(0);
 	}
 	
