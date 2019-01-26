@@ -48,10 +48,27 @@ public class Player : MonoBehaviour
     /// </summary>
     public string Name { get; private set; }
 
+
+    private int score;
     /// <summary>
     /// The score that has been earned by the player
     /// </summary>
-    public int Score { get; private set; }
+    public int Score
+    {
+        get
+        {
+            return score;
+        }
+
+        private set
+        {
+            if (value != score)
+            {
+                score = value;
+                OnScoreChange.Invoke(score);
+            }
+        }
+    }
 
     // Use this for initialization
     [SerializeField]private float speed;
@@ -68,10 +85,28 @@ public class Player : MonoBehaviour
     
     
     [SerializeField] private GameObject model;
+
+    private int numPillowHold;
     /// <summary>
     /// The number of pillows carried by the player
     /// </summary
-    private int numPillowHold;
+    public int NumPillowsHeld
+    {
+        get
+        {
+            return numPillowHold;
+        }
+
+        set
+        {
+            if (value != numPillowHold)
+            {
+                numPillowHold = value;
+                OnNumPillowsHeldChange.Invoke(numPillowHold);
+            }
+        }
+    }
+
     private List<Pillow> Pillows;
     private List<Pillow> Ammo;
     private float emPower;
@@ -81,10 +116,13 @@ public class Player : MonoBehaviour
     private bool oldTriggerHeldPick;
     private bool oldTriggerHeldThrow;
 
-    void Start()
+    public EventOnDataChange<int> OnScoreChange { get; private set; }
+    public EventOnDataChange<int> OnNumPillowsHeldChange { get; private set; }
+
+    public void Initialize(PlayerInfo playerInfo)
     {
-        Id = 0;
-        Name = "";
+        Id = playerInfo.id;
+        Name = playerInfo.Name;
         Score = 0;
 
         numPillowHold = 0;
@@ -94,13 +132,9 @@ public class Player : MonoBehaviour
         emPower = 0.0f;
         // let the gameObject fall down
         gameObject.transform.position = new Vector3(0, 5, 0);
-    }
 
-    public void Initialize(PlayerInfo playerInfo)
-    {
-        Id = playerInfo.id;
-        Name = playerInfo.Name;
-        Score = 0;
+        OnScoreChange = new EventOnDataChange<int>();
+        OnNumPillowsHeldChange = new EventOnDataChange<int>();
     }
 
     void FixedUpdate()
@@ -130,7 +164,7 @@ public class Player : MonoBehaviour
         bool newTriggerHeldPick = Input.GetAxis("Pick") > 0f;
         if(!oldTriggerHeldPick == newTriggerHeldPick)
         {
-            if (numPillowHold >= 2)
+            if (NumPillowsHeld >= 2)
             {
                 // exceed the number that one player can hold 
                 ThrowDrop();
@@ -147,7 +181,7 @@ public class Player : MonoBehaviour
         bool newTriggerHeldThrow = Input.GetAxis("Throw") > 0f;
         if (newTriggerHeldThrow != oldTriggerHeldThrow)
         {
-            if (newTriggerHeldThrow && numPillowHold > 0)
+            if (newTriggerHeldThrow && NumPillowsHeld > 0)
             {
                 // start to empower the throw
                 if (Ammo.Count != 0)
@@ -173,7 +207,7 @@ public class Player : MonoBehaviour
                 emPower = 0.0f;
                 oldTriggerHeldThrow = false;
                 Ammo.RemoveAt(0);
-                numPillowHold--;
+                NumPillowsHeld--;
             } 
           
         }
@@ -193,16 +227,18 @@ public class Player : MonoBehaviour
 
     }
 
-
-    public void PickUp() {
-            for (int i = 0; i < Pillows.Count; i++) {
-                var temp = Pillows[i];
-                if (temp.currentState==PillowState.Idle) {
-                    temp.Pick(model);
-                    Ammo.Add(temp);
-                    numPillowHold++;
-                    break;
-                }
+    public void PickUp()
+    {
+        for (int i = 0; i < Pillows.Count; i++)
+        {
+            var temp = Pillows[i];
+            if (temp.currentState==PillowState.Idle)
+            {
+                temp.Pick(gameObject);
+                Ammo.Add(temp);
+                NumPillowsHeld++;
+                break;
+            }
         }
     }
 

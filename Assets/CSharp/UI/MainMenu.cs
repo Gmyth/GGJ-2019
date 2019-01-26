@@ -92,7 +92,6 @@ public class MainMenu : UIWindow
             {
                 case 0:
                     GameManager.Singleton.SetUpNewMatch();
-                    Close();
                     break;
 
                 case 1:

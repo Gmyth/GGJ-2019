@@ -72,7 +72,7 @@ public class MatchSetup : UIWindow
     {
         for (int i = 0; i < numPlayers; i++)
         {
-            if (Input.GetAxis("Submit" + i) == 0)
+            if (Input.GetAxis("Submit_J" + (i + 1)) == 0)
                 isSubmitButtonUp[i] = true;
             else if (isSubmitButtonUp[i])
             {

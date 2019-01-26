@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 23534104083688562}
   - component: {fileID: 136382750890422854}
   - component: {fileID: 114237999318680858}
+  - component: {fileID: 143766096609672296}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -181,9 +182,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1967174371553006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a9cf4a31e51fe0449029aff8a37c414, type: 3}
+  m_Script: {fileID: 11500000, guid: 636925916ab20bf469ea0ed0fcf32766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0
+  jumpSpeed: 0
+  gravity: 0
+  minThrowPower: 0
+  maxThrowPower: 0
+  powerToAddEachFrame: 0
+  powerThrowForward: 0
+  powerThrowUpper: 0
+  model: {fileID: 0}
 --- !u!136 &136382750890422854
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -196,4 +206,21 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!143 &143766096609672296
+CharacterController:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1967174371553006}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
