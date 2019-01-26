@@ -28,18 +28,21 @@ public class UIManager : MonoBehaviour
         /// <summary>
         /// The window should be closed in a short period of time, therefore making the viewport not clear when it is not closed
         /// </summary>
-        DEFAULT = 0,
+        Default = 0,
 
         /// <summary>
         /// The windows is considered to be a part of the viewport
         /// </summary>
-        PERMANENT,
+        Permenent,
+
+        /// <summary>
+        /// The window can have multiple instances
+        /// </summary>
+        Duplicable,
     }
 
     private Stack<string> uiWindowStack;
     private Dictionary<string, UIWindow> uiWindowsOpened;
-
-    private bool isCancelButtonDown = false;
 
     /// <summary>
     /// Whether the UI window is opened in the viewport (not considering the UIMode)
@@ -67,7 +70,7 @@ public class UIManager : MonoBehaviour
     /// <param name="mode"> The mode to be used to open the UI window </param>
     /// <param name="args"> Extra arguments passed to UIWindow.OnOpen() </param>
     /// <returns></returns>
-    public UIWindow Open(string name, UIMode mode = UIMode.DEFAULT, params object[] args)
+    public UIWindow Open(string name, UIMode mode = UIMode.Default, params object[] args)
     {
 #if UNITY_EDITOR
         LogUtility.PrintLog("UI", IsInViewport(name) ? name + " is already in viewport" : "Open " + name);
@@ -84,7 +87,7 @@ public class UIManager : MonoBehaviour
 
         uiWindow.OnOpen(args);
 
-        if (mode != UIMode.PERMANENT)
+        if (mode != UIMode.Permenent)
             uiWindowStack.Push(name);
 
         return uiWindow;

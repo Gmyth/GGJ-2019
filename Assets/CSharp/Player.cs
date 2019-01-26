@@ -1,9 +1,51 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class Player : MonoBehaviour {
+public class PlayerInfo
+{
+    public readonly int id;
+
+    private string name;
+    public string Name
+    {
+        get
+        {
+            return name;
+        }
+
+        set
+        {
+            if (value != name)
+            {
+                name = value;
+                OnNameChange.Invoke(name);
+            }
+        }
+    }
+
+    public EventOnDataChange<string> OnNameChange { get; private set; }
+
+    private PlayerInfo() {}
+
+    public PlayerInfo(int id, string name)
+    {
+        this.id = id;
+        this.name = name;
+
+        OnNameChange = new EventOnDataChange<string>();
+    }
+}
+
+public class Player : MonoBehaviour
+{
+    /// <summary>
+    /// The name of the player, which is set at the beginning of the game
+    /// </summary>
+    public int Id { get; private set; }
+
+    /// <summary>
+    /// The name of the player, which is set at the beginning of the game
+    /// </summary>
     public string Name { get; private set; }
 
     /// <summary>
@@ -41,6 +83,10 @@ public class Player : MonoBehaviour {
 
     void Start()
     {
+        Id = 0;
+        Name = "";
+        Score = 0;
+
         numPillowHold = 0;
         controller = GetComponent<CharacterController>();
         Ammo = new List<Pillow>();
@@ -48,6 +94,13 @@ public class Player : MonoBehaviour {
         emPower = 0.0f;
         // let the gameObject fall down
         gameObject.transform.position = new Vector3(0, 5, 0);
+    }
+
+    public void Initialize(PlayerInfo playerInfo)
+    {
+        Id = playerInfo.id;
+        Name = playerInfo.Name;
+        Score = 0;
     }
 
     void FixedUpdate()
@@ -133,21 +186,27 @@ public class Player : MonoBehaviour {
         // Move the controller
         controller.Move(moveDirection * Time.deltaTime);
     }
-    public void ThrowDrop() {
+
+    public void ThrowDrop()
+    {
 
     }
 
-    public void PickUp() {
-            for (int i = 0; i < Pillows.Count; i++) {
-                var temp = Pillows[i];
-                if (temp.currentState==PillowState.Idle) {
-                    temp.Pick(gameObject);
-                    Ammo.Add(temp);
-                    numPillowHold++;
-                    break;
-                }
+    public void PickUp()
+    {
+        for (int i = 0; i < Pillows.Count; i++)
+        {
+            var temp = Pillows[i];
+            if (temp.currentState==PillowState.Idle)
+            {
+                temp.Pick(gameObject);
+                Ammo.Add(temp);
+                numPillowHold++;
+                break;
             }
+        }
     }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Pillow") {
