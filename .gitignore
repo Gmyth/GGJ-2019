@@ -54,3 +54,4 @@ crashlytics-build.properties
 *.ide-shm
 *.ide
 Library/*
+Library/shadercompiler-UnityShaderCompiler.exe0.log
