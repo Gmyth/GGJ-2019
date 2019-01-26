@@ -39,8 +39,6 @@ public class UIManager : MonoBehaviour
     private Stack<string> uiWindowStack;
     private Dictionary<string, UIWindow> uiWindowsOpened;
 
-    private bool isCancelButtonDown = false;
-
     /// <summary>
     /// Whether the UI window is opened in the viewport (not considering the UIMode)
     /// </summary>
