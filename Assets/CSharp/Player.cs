@@ -186,14 +186,14 @@ public class Player : MonoBehaviour
                 // start to empower the throw
                 if (Ammo.Count != 0)
                 {
-                    Ammo[0].ReadyToGo(model);
+                    Ammo[0].ReadyToGo();
                     emPower = minThrowPower;
                 }
             }
             
         }
 
-        if (emPower > 0.1f)
+        if (emPower > 0.01f)
         {
             emPower = emPower < maxThrowPower ? emPower + powerToAddEachFrame : emPower; 
         }
@@ -202,6 +202,7 @@ public class Player : MonoBehaviour
             /// throw
             if (Ammo.Count!=0)
             {
+                print("emPower" + emPower);
                 Ammo[0].Throw( model.transform.forward, model.transform.up, (emPower - 0.08f + 1) * powerThrowForward, (emPower + 1) * powerThrowUpper);
                 emPower = 0.0f;
                 oldTriggerHeldThrow = false;
