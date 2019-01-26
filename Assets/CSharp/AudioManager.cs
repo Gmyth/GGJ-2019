@@ -20,14 +20,11 @@ public class AudioManager : MonoBehaviour {
     public float GlobalEffectVolume = 0.7f;
     public float GlobalBGMVoume = 0.45f;
 
-    private Dictionary<string, AudioSource> OnPlayingEffectSource;
-
     public static AudioManager Instance = null;
 	// Use this for initialization
 	void Awake () {
 		if(Instance == null)
         {
-            OnPlayingEffectSource = new Dictionary<string, AudioSource>();
             Instance = this;
         }
         else if(Instance != this)
@@ -60,7 +57,7 @@ public class AudioManager : MonoBehaviour {
     /// Play a soundfx from loaded clips
     /// </summary>
     /// <param name="loop"> Whether loop the soundfx </param>
-    public void PlayEffect(string clipName, bool loop)
+    public void PlaySoundEffect(string clipName, bool loop = false)
     {
         AudioSource tempSource = null;
         foreach(AudioSource s in EffectSource)
@@ -68,6 +65,7 @@ public class AudioManager : MonoBehaviour {
             if(s.isPlaying == false)
             {
                 tempSource = s;
+                break;
             }
         }
         if (tempSource == null)
@@ -76,27 +74,26 @@ public class AudioManager : MonoBehaviour {
         }
         else
         {
+            tempSource.loop = loop;
             SetRandomPitch(tempSource);
+            List<AudioClip> clips = new List<AudioClip>();
             foreach (AudioClip c in SoundFX)
-            {
-                if (c.name.Equals(clipName))
-                {
-                    tempSource.clip = c;
-                    tempSource.Play();
-                    OnPlayingEffectSource.Add(clipName, tempSource);
-                    break;
-                }
-                else
-                    Debug.Log("[AudioManager]: SoundFX Match Failure ");
-
+            {            
+                if (c.name.Contains(clipName))
+                    clips.Add(c);
             }
+            if (clips.Count == 0)
+                Debug.Log("[AudioManager]: SoundFX Match Failure ");
+            int index = Random.Range(0, clips.Count);
+            tempSource.clip = clips[index];
+            tempSource.Play();
         }
     }
 
     /// <summary>
     /// Play Interface Sound
     /// </summary>
-    public void PlayInterface(string clipName)
+    public void PlayInterfaceEffect(string clipName)
     {
         foreach (AudioClip c in InterfaceEffect)
         {
@@ -116,20 +113,20 @@ public class AudioManager : MonoBehaviour {
     /// </summary>
     /// <param name="fadeOut"> Stop the soundFX by fadingout </param>
     /// <param name="fadeOutTime"> The fade out time, default 1f </param>
-    public void StopEffect(string clipName, bool fadeOut, float fadeoutTime = 1f)
+    public void StopSoundEffect(string clipName, bool fadeOut, float fadeoutTime = 1f)
     {
-        AudioSource tempSource;
-        if(OnPlayingEffectSource.ContainsKey(clipName))
+        foreach (AudioSource s in EffectSource)
         {
-            tempSource = OnPlayingEffectSource[clipName];
-            if (fadeOut == true)            
-                FadeOut(tempSource, fadeoutTime);
-            else
-                tempSource.Stop();
-        }
-        else
-        {
-            Debug.Log("[AudioManager]: The SoundFX is not playing");
+            if(s.isPlaying == true)
+            {
+                if (s.clip.name.Contains(clipName))
+                {
+                    if (fadeOut == true)
+                        FadeOut(s, fadeoutTime);
+                    else
+                        s.Stop();
+                }   
+            }
         }
     }
 
@@ -168,7 +165,6 @@ public static class AudioFadeOut
 
             yield return null;
         }
-
         audioSource.Stop();
         audioSource.volume = startVolume;
     }
