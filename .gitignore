@@ -53,5 +53,4 @@ crashlytics-build.properties
 *.ide-wal
 *.ide-shm
 *.ide
-Library/metadata/a2/a229546b31887e14cb53eb9b6d0e0c8f
-Library/metadata/a2/a229546b31887e14cb53eb9b6d0e0c8f
+Library/*

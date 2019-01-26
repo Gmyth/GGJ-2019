@@ -234,9 +234,10 @@ Prefab:
       propertyPath: m_Name
       value: Pillow
       objectReference: {fileID: 0}
-    - target: {fileID: 1524292023201930, guid: 45b4ad4bece746142816e6b3b5129144, type: 2}
-      propertyPath: m_TagString
-      value: Pillow
+    - target: {fileID: 54895277909924644, guid: 45b4ad4bece746142816e6b3b5129144,
+        type: 2}
+      propertyPath: m_Mass
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45b4ad4bece746142816e6b3b5129144, type: 2}
@@ -549,6 +550,11 @@ Prefab:
       propertyPath: m_TagString
       value: Pillow
       objectReference: {fileID: 0}
+    - target: {fileID: 54895277909924644, guid: 45b4ad4bece746142816e6b3b5129144,
+        type: 2}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45b4ad4bece746142816e6b3b5129144, type: 2}
   m_IsPrefabAsset: 0
@@ -707,6 +713,11 @@ Prefab:
       propertyPath: m_TagString
       value: Pillow
       objectReference: {fileID: 0}
+    - target: {fileID: 54895277909924644, guid: 45b4ad4bece746142816e6b3b5129144,
+        type: 2}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45b4ad4bece746142816e6b3b5129144, type: 2}
   m_IsPrefabAsset: 0
@@ -793,6 +804,11 @@ Prefab:
       propertyPath: m_TagString
       value: Pillow
       objectReference: {fileID: 0}
+    - target: {fileID: 54895277909924644, guid: 45b4ad4bece746142816e6b3b5129144,
+        type: 2}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45b4ad4bece746142816e6b3b5129144, type: 2}
   m_IsPrefabAsset: 0
@@ -842,6 +858,11 @@ Prefab:
     - target: {fileID: 1524292023201930, guid: 45b4ad4bece746142816e6b3b5129144, type: 2}
       propertyPath: m_TagString
       value: Pillow
+      objectReference: {fileID: 0}
+    - target: {fileID: 54895277909924644, guid: 45b4ad4bece746142816e6b3b5129144,
+        type: 2}
+      propertyPath: m_IsKinematic
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45b4ad4bece746142816e6b3b5129144, type: 2}

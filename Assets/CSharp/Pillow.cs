@@ -55,8 +55,10 @@ public class Pillow : MonoBehaviour {
     public void Throw(Vector3 forward, Vector3 Up,float ForwardForce, float UpperForce)
     {
         currentState = PillowState.Throwed;
-        GetComponent<Rigidbody>().AddForce(forward * ForwardForce);
-        GetComponent<Rigidbody>().AddForce(Up * UpperForce);
+        print("direction: " + forward);
+        //GetComponent<Rigidbody>().AddForce(forward * ForwardForce);
+        GetComponent<Rigidbody>().velocity = forward * 2.0f;
+        //GetComponent<Rigidbody>().AddForce(Up * UpperForce);
         holder = null;
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<MeshCollider>().enabled = true;
