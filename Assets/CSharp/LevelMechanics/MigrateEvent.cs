@@ -7,7 +7,6 @@ public class MigrateEvent : LevelEvent {
     [SerializeField] private Transform spawnPoint;
 
     [SerializeField] private GameObject yakPrefab;
-    private Yak[] yaks;
 
     [SerializeField] private float createTimePeriod;
 
