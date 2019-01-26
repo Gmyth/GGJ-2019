@@ -4,7 +4,7 @@ using UnityEngine;
 public class MatchSetup : UIWindow
 {
     [SerializeField] private Transform list;
-    private UIWidget[] playerWidgets;
+    private PlayerInfoWidget[] playerWidgets;
 
     private PlayerInfo[] players;
     private int numPlayers;
@@ -12,6 +12,12 @@ public class MatchSetup : UIWindow
 
     public override void OnOpen(params object[] args)
     {
+        int numListItems = list.childCount;
+
+        playerWidgets = new PlayerInfoWidget[numListItems];
+        for (int i = 0; i < numListItems; i++)
+            playerWidgets[i] = list.GetChild(i).GetComponent<PlayerInfoWidget>();
+
         players = (PlayerInfo[])args;
         numPlayers = players.Length;
 
@@ -23,7 +29,7 @@ public class MatchSetup : UIWindow
         }
 
         while (id < 4)
-            HidePlayerWidget(id);
+            HidePlayerWidget(id++);
 
         isSubmitButtonUp = new bool[numPlayers];
     }
@@ -45,6 +51,8 @@ public class MatchSetup : UIWindow
 
     private void TogglePlayerReadiness(int id)
     {
+        playerWidgets[id].ToggleReadiness();
+
         if (isPlayerReady.Contains(id))
         {
             isPlayerReady.Remove(id);
@@ -56,15 +64,6 @@ public class MatchSetup : UIWindow
             if (isPlayerReady.Count == numPlayers)
                 GameManager.Singleton.StartNewMatch();
         }
-    }
-
-    private void Start()
-    {
-        int numListItems = list.childCount;
-
-        playerWidgets = new UIWidget[numListItems];
-        for (int i = 0; i < numListItems; i++)
-            playerWidgets[i] = list.GetChild(i).GetComponent<UIWidget>();
     }
 
     bool[] isSubmitButtonUp;

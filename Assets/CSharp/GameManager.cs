@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// An event triggered whenever the state of the game changes
     /// </summary>
-    public EventOnDataChange<GameState> onCurrentGameStateChange = new EventOnDataChange<GameState>();
+    public EventOnDataChange2<GameState> onCurrentGameStateChange = new EventOnDataChange2<GameState>();
 
     private GameState currentGameState;
 

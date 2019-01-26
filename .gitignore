@@ -8,3 +8,5 @@ Temp/UnityTempFile-e4437f673bf4ba149bb7fa6c87b8583d
 /Library
 /obj
 /*.csproj
+/*.sln
+/.vs

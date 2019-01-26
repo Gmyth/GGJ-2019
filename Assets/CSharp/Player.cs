@@ -1,11 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerInfo
 {
     public readonly int id;
-    public string name;
+
+    private string name;
+    public string Name
+    {
+        get
+        {
+            return name;
+        }
+
+        set
+        {
+            if (value != name)
+            {
+                name = value;
+                OnNameChange.Invoke(name);
+            }
+        }
+    }
+
+    public EventOnDataChange<string> OnNameChange { get; private set; }
 
     private PlayerInfo() {}
 
@@ -13,6 +30,8 @@ public class PlayerInfo
     {
         this.id = id;
         this.name = name;
+
+        OnNameChange = new EventOnDataChange<string>();
     }
 }
 
@@ -49,7 +68,7 @@ public class Player : MonoBehaviour
     public void Initialize(PlayerInfo playerInfo)
     {
         Id = playerInfo.id;
-        Name = playerInfo.name;
+        Name = playerInfo.Name;
         Score = 0;
         Pillow = 1;
     }
