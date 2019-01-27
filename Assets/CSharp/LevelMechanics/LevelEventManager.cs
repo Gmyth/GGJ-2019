@@ -34,14 +34,9 @@ public class LevelEventManager: MonoBehaviour
 
     // Update is called once per frame
 
-    private IEnumerator rollEvent()
+    public void RollEvent()
     {
-        while (true)
-        {
-            //Roll a random event
-            yield return new WaitForSeconds(rollTimePeriod);
-            
-        }
+        TriggerEventWithIndex(Random.Range(0, events.Length));
     }
 
     public void TriggerEventWithName(string name)

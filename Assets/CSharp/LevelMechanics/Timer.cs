@@ -17,7 +17,8 @@ public class Timer : MonoBehaviour {
         if(Mathf.Round(ElapsedTime) == 10f)
         {
             ElapsedTime++;
-            LevelEventManager.Instance.TriggerEventWithIndex(0);
+            //LevelEventManager.Instance.TriggerEventWithIndex(0);
+            LevelEventManager.Instance.RollEvent();
         }
 	}
 }
