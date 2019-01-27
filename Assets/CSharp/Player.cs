@@ -194,6 +194,7 @@ public class Player : MonoBehaviour
                 // a Pillow Sweep
                 if(numPillowHold == 1)
                 {
+                    AudioManager.Instance.PlaySoundEffect("PillowNearFight", false);
                     var temp = Ammo.Peek();
                     temp.Attack();
                 }
@@ -209,7 +210,7 @@ public class Player : MonoBehaviour
                 Pillow pillow = Ammo.Dequeue();
                 pillow.Throw(model.transform.forward, model.transform.up, (emPower - 0.08f + 1) * powerThrowForward, (emPower + 1) * powerThrowUpper);
                 pillow.transform.parent = transform.parent;
-
+                AudioManager.Instance.PlaySoundEffect("PillowThrow", false);
                 top.SetInteger("CurrentState", 3);
                 StartCoroutine(ThrowFinish());
                 emPower = 0;
@@ -298,6 +299,7 @@ public class Player : MonoBehaviour
             pillow.transform.localRotation = Quaternion.identity;
 
             pillow.Pick(gameObject);
+            AudioManager.Instance.PlaySoundEffect("PillowNearFight1", false);
             Ammo.Enqueue(pillow);
         }
     }

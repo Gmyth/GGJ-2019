@@ -115,6 +115,7 @@ public class Pillow : MonoBehaviour {
                     {
                         other.GetComponent<Player>().Hurt(true);
                     }
+                    AudioManager.Instance.PlaySoundEffect("PillowNearFight", false);
                     currentState = PillowState.Idle;
                     holder = null;
                 }
@@ -130,6 +131,7 @@ public class Pillow : MonoBehaviour {
                 {
                     other.GetComponent<Player>().Hurt(true);
                 }
+                AudioManager.Instance.PlaySoundEffect("PillowNearFight", false);
                 currentState = PillowState.Idle;
             }
         }
