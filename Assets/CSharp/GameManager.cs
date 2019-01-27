@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -10,6 +11,7 @@ public enum GameState : int
     MainMenu,
     MatchSetup,
     Match,
+    MatchResult,
     End,
 }
 
@@ -22,8 +24,25 @@ public class GameManager : MonoBehaviour
     private LevelData levelData;
     private Player[] players;
     private List<Pillow> pillows;
+    private SortedList<int, PlayerRecord> lastMatchResult;
 
-    public long MatchStartTime { get; private set; }
+    private float matchTimeLeft;
+    public float MatchTimeLeft
+    {
+        get
+        {
+            return matchTimeLeft;
+        }
+
+        private set
+        {
+            if (value != matchTimeLeft)
+            {
+                matchTimeLeft = value;
+                OnMatchTimeLeftChange.Invoke(matchTimeLeft);
+            }
+        }
+    }
 
     /// <summary>
     /// The unique instance
@@ -33,7 +52,8 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// An event triggered whenever the state of the game changes
     /// </summary>
-    public EventOnDataChange2<GameState> onCurrentGameStateChange = new EventOnDataChange2<GameState>();
+    public EventOnDataChange2<GameState> OnCurrentGameStateChange { get; private set; }
+    public EventOnDataChange<float> OnMatchTimeLeftChange { get; private set; }
 
     private GameState currentGameState;
 
@@ -61,9 +81,11 @@ public class GameManager : MonoBehaviour
                     case GameState.Match:
                         ResetPlayers();
                         ResetPillows();
-                        MatchStartTime = TimeUtility.localTimeInMilisecond;
+                        MatchTimeLeft = 120;
                         break;
                 }
+
+                OnCurrentGameStateChange.Invoke(currentGameState, currentGameState);
             }
             else
             {
@@ -80,15 +102,23 @@ public class GameManager : MonoBehaviour
 
                     case GameState.Match:
                         UIManager.Singleton.Close("HUD");
-                        Destroy(levelData);
+                        lastMatchResult = new SortedList<int, PlayerRecord>();
+                        Destroy(levelData.gameObject);
                         foreach (Player player in players)
-                            Destroy(player);
+                        {
+                            lastMatchResult.Add(player.Score * 10000 + player.Id, new PlayerRecord(player));
+                            Destroy(player.gameObject);
+                        }
                         foreach (Pillow pillow in pillows)
-                            Destroy(pillow);
+                            Destroy(pillow.gameObject);
                         levelData = null;
                         players = null;
                         pillows = null;
-                        MatchStartTime = 0;
+                        MatchTimeLeft = 0;
+                        break;
+
+                    case GameState.MatchResult:
+                        UIManager.Singleton.Close("MatchResult");
                         break;
                 }
 
@@ -104,18 +134,18 @@ public class GameManager : MonoBehaviour
                 //{
                 //}
 
-                onCurrentGameStateChange.Invoke(previousGameState, currentGameState);
+                OnCurrentGameStateChange.Invoke(previousGameState, currentGameState);
 
                 switch (currentGameState)
                 {
                     case GameState.MainMenu:
+                        playerInfos = null;
                         UIManager.Singleton.Open("MainMenu");
                         break;
 
                     case GameState.MatchSetup:
                         {
                             playerInfos = new List<PlayerInfo>();
-
                             UIManager.Singleton.Open("MatchSetup", UIManager.UIMode.Default, playerInfos);
                         }
                         break;
@@ -128,8 +158,13 @@ public class GameManager : MonoBehaviour
 
                             UIManager.Singleton.Open("HUD", UIManager.UIMode.Permenent, players);
 
-                            MatchStartTime = TimeUtility.localTimeInMilisecond;
+                            MatchTimeLeft = 120;
+                            StartCoroutine(MatchCountdown());
                         }
+                        break;
+
+                    case GameState.MatchResult:
+                        UIManager.Singleton.Open("MatchResult", UIManager.UIMode.Default, lastMatchResult);
                         break;
 
                     case GameState.End:
@@ -240,6 +275,22 @@ public class GameManager : MonoBehaviour
             pillow.ResetAll();
     }
 
+    private IEnumerator MatchCountdown()
+    {
+        while (MatchTimeLeft > 0)
+        {
+            MatchTimeLeft -= Time.deltaTime;
+            yield return null;
+        }
+
+        MatchTimeLeft = 0;
+
+        if (CurrentGameState == GameState.Match)
+            CurrentGameState = GameState.MatchResult;
+
+        yield break;
+    }
+
     private void Awake()
     {
         if (!Singleton)
@@ -250,6 +301,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        OnCurrentGameStateChange = new EventOnDataChange2<GameState>();
+        OnMatchTimeLeftChange = new EventOnDataChange<float>();
+
         CurrentGameState = GameState.MainMenu;
     }
 }

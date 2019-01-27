@@ -24,8 +24,7 @@ public class MainMenu : UIWindow
     {
         if (currentIndex > 0)
         {
-            Deselect(currentIndex);
-            currentIndex = Mathf.Max(currentIndex - 1, 0);
+            Deselect(currentIndex--);
             Select(currentIndex);
         }
     }
@@ -34,8 +33,7 @@ public class MainMenu : UIWindow
     {
         if (currentIndex < maxIndex)
         {
-            Deselect(currentIndex);
-            currentIndex = Mathf.Min(currentIndex + 1, maxIndex);
+            Deselect(currentIndex++);
             Select(currentIndex);
         }
     }

@@ -123,10 +123,11 @@ public class UIManager : MonoBehaviour
 
             Stack<string> s = new Stack<string>();
 
-            while (uiWindowStack.Peek().CompareTo(name) != 0)
+            while (uiWindowStack.Count > 0 && uiWindowStack.Peek().CompareTo(name) != 0)
                 s.Push(uiWindowStack.Pop());
 
-            uiWindowStack.Pop();
+            if (uiWindowStack.Count > 0)
+                uiWindowStack.Pop();
 
             while (s.Count > 0)
                 uiWindowStack.Push(s.Pop());

@@ -31,10 +31,29 @@ public class HUD : UIWindow
 
         while (id < maxNumPlayers)
             playerWidgets[id++].Hide();
+
+        isStartButtonUp = new bool[numPlayers];
+
+        GameManager.Singleton.OnMatchTimeLeftChange.AddListener(UpdateCountdown);
     }
+
+    private void UpdateCountdown(float matchTimeLeft)
+    {
+        countdown.text = Mathf.RoundToInt(matchTimeLeft).ToString();
+    }
+
+    private bool[] isStartButtonUp;
 
     private void Update()
     {
-        countdown.text = Mathf.RoundToInt(120 - (TimeUtility.localTimeInMilisecond - GameManager.Singleton.MatchStartTime) / 1000f).ToString();
+        if (!UIManager.Singleton.IsInViewport("InMatchMenu"))
+            for (int id = 0; id < players.Length; id++)
+                if (Input.GetAxis("Start" + players[id].ControllerId) == 0)
+                    isStartButtonUp[id] = true;
+                else if (isStartButtonUp[id])
+                {
+                    isStartButtonUp[id] = false;
+                    UIManager.Singleton.Open("InMatchMenu", UIManager.UIMode.Default, players[id].ControllerId);
+                }
     }
 }
