@@ -147,7 +147,6 @@ public class GameManager : MonoBehaviour
                 {
                     case GameState.MainMenu:
                         playerInfos = null;
-                        UIManager.Singleton.Open("MainMenu");
                         AudioManager.Instance.PlayBGM();
                         UIManager.Singleton.Open("MainMenu", UIManager.UIMode.Default, previousGameState == GameState.GameGuide ? 1 : 0);
                         break;
