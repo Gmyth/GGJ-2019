@@ -19,7 +19,6 @@ public class Pillow : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 	    currentState = PillowState.Idle;
-
         isInWind = false;
     }
 	
@@ -79,10 +78,11 @@ public class Pillow : MonoBehaviour {
 
     private IEnumerator FlyInWind()
     {
-        yield return new WaitForSeconds(0.05f);
+        Debug.Log("enter wind");
+        yield return new WaitForSeconds(1f);
         if (currentState == PillowState.Throwed)
         {
-            GetComponent<Rigidbody>().AddForce(Vector3.forward * 1000);
+            GetComponent<Rigidbody>().AddForce(Vector3.forward * 2500f);
         }
     }
 
