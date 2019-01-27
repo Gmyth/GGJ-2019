@@ -83,6 +83,7 @@ public class Pillow : MonoBehaviour
 
     public void Throw(Vector3 forward, Vector3 Up,float ForwardForce, float UpperForce)
     {
+        AudioManager.Instance.PlaySoundEffect("PillowThrow", volume: 1);
         currentState = PillowState.Throwed;
 
         launchPoint = transform.position;

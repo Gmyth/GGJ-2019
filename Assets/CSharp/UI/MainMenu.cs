@@ -66,6 +66,7 @@ public class MainMenu : UIWindow
             isUpButtonUp = false;
 
             MoveIndexUp();
+            AudioManager.Instance.PlaySoundEffect("ButtonClick3");
         }
 
         if (verticalInput >= -0.5f)
@@ -75,12 +76,15 @@ public class MainMenu : UIWindow
             isDownButtonUp = false;
 
             MoveIndexDown();
+            AudioManager.Instance.PlaySoundEffect("ButtonClick3");
         }
 
         if (Input.GetAxis("Submit") == 0)
             isSubmitButtonUp = true;
         else if (isSubmitButtonUp)
         {
+            AudioManager.Instance.PlaySoundEffect("ClickDown2");
+
             isSubmitButtonUp = false;
 
             switch (currentIndex)

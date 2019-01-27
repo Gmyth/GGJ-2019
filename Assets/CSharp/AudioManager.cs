@@ -26,6 +26,8 @@ public class AudioManager : MonoBehaviour {
 		if(Instance == null)
         {
             Instance = this;
+            SetGlobalEffectVolume(GlobalEffectVolume);
+            SetGobalBGMVolume(GlobalBGMVoume);
         }
         else if(Instance != this)
         {
@@ -57,7 +59,7 @@ public class AudioManager : MonoBehaviour {
     /// Play a soundfx from loaded clips
     /// </summary>
     /// <param name="loop"> Whether loop the soundfx </param>
-    public void PlaySoundEffect(string clipName, bool loop = false)
+    public void PlaySoundEffect(string clipName, bool loop = false, bool pitch = true, float volume = 2)
     {
         AudioSource tempSource = null;
         foreach(AudioSource s in EffectSource)
@@ -65,6 +67,10 @@ public class AudioManager : MonoBehaviour {
             if(s.isPlaying == false)
             {
                 tempSource = s;
+                if (volume != 2 && (volume <= 1 && volume >= 0))
+                    tempSource.volume = volume;
+                else
+                    tempSource.volume = GlobalEffectVolume;
                 break;
             }
         }
@@ -75,7 +81,12 @@ public class AudioManager : MonoBehaviour {
         else
         {
             tempSource.loop = loop;
-            SetRandomPitch(tempSource);
+
+            if (pitch == true)
+                SetRandomPitch(tempSource);
+            else
+                tempSource.pitch = 1;
+
             List<AudioClip> clips = new List<AudioClip>();
             foreach (AudioClip c in SoundFX)
                 if (c)
@@ -139,7 +150,8 @@ public class AudioManager : MonoBehaviour {
 
     public void SetGlobalEffectVolume(float volume)
     {
-        foreach(AudioSource s in EffectSource)
+        GlobalEffectVolume = volume;
+        foreach (AudioSource s in EffectSource)
         {
             s.volume = volume;
         }
@@ -147,6 +159,7 @@ public class AudioManager : MonoBehaviour {
 
     public void SetGobalBGMVolume(float volume)
     {
+        GlobalBGMVoume = volume;
         BGMSource.volume = volume;
     }
 

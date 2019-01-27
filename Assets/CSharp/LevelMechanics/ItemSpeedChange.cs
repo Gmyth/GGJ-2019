@@ -13,9 +13,12 @@ public class ItemSpeedChange : MonoBehaviour
         {
             Player player = other.GetComponent<Player>();
             player.SetSpeed(speedfactor);
+            AudioManager.Instance.PlaySoundEffect("Drinking", false, true, 1);
             player.StartCoroutine(StartCountdown(player, duration));
 
             gameObject.SetActive(false);
+ 
+
         }
     }
 

@@ -141,6 +141,7 @@ public class GameManager : MonoBehaviour
                     case GameState.MainMenu:
                         playerInfos = null;
                         UIManager.Singleton.Open("MainMenu");
+                        AudioManager.Instance.PlayBGM();
                         break;
 
                     case GameState.MatchSetup:

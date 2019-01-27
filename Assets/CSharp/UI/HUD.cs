@@ -37,9 +37,15 @@ public class HUD : UIWindow
         GameManager.Singleton.OnMatchTimeLeftChange.AddListener(UpdateCountdown);
     }
 
+    private string temp = null;
     private void UpdateCountdown(float matchTimeLeft)
     {
         countdown.text = Mathf.RoundToInt(matchTimeLeft).ToString();
+        if(temp != countdown.text)
+        {
+            AudioManager.Instance.PlaySoundEffect("ClickDown1", false, false);
+            temp = countdown.text;
+        }
     }
 
     private bool[] isStartButtonUp;

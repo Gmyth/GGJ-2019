@@ -25,7 +25,7 @@ public class LevelEvent : MonoBehaviour {
         while (t > 0)
         {
             t -= 1;
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSecondsRealtime(1);
         }
         OnEnd();
     }
