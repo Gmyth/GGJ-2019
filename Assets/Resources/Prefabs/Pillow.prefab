@@ -53,9 +53,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1146264361659686}
-  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 14.21, y: 1.7622905, z: -9.44}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10, y: 1.5, z: -10.25}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4993854818789516}
   m_Father: {fileID: 0}
@@ -172,3 +172,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Collider: {fileID: 64797845044363314}
   currentState: 0
+  isInWind: 0
