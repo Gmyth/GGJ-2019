@@ -262,6 +262,102 @@ InputManager:
     axis: 27
     joyNum: 16
   - serializedVersion: 3
+    m_Name: Start_J1
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: joystick 1 button 7
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.001
+    sensitivity: 3
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 1
+  - serializedVersion: 3
+    m_Name: Start_J2
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: joystick 2 button 7
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.001
+    sensitivity: 3
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 2
+  - serializedVersion: 3
+    m_Name: Start_J3
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: joystick 3 button 7
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.001
+    sensitivity: 3
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 3
+  - serializedVersion: 3
+    m_Name: Start_J4
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: joystick 4 button 7
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.001
+    sensitivity: 3
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 4
+  - serializedVersion: 3
+    m_Name: Start_K1
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: left ctrl
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.001
+    sensitivity: 3
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 27
+    joyNum: 16
+  - serializedVersion: 3
+    m_Name: Start_K2
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: right ctrl
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.001
+    sensitivity: 3
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 27
+    joyNum: 16
+  - serializedVersion: 3
     m_Name: Submit
     descriptiveName: 
     descriptiveNegativeName: 
