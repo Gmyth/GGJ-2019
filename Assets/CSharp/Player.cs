@@ -157,6 +157,25 @@ public class Player : MonoBehaviour
             else
                 PickUp();
         }
+        //Attack
+        if (Input.GetAxis("Attack" + ControllerId) > 0) {
+            top.SetInteger("CurrentState", 4);
+            StartCoroutine(AttackFinish());
+            if (numPillowHold == 0)
+            {
+                // that is a punch
+                SlotRA.GetComponent<SphereCollider>().enabled = true;
+            }
+            else {
+                // a Pillow Sweep
+                if(numPillowHold == 1)
+                {
+                    var temp = Ammo.Peek();
+                    temp.Attack();
+                }
+            }
+        }
+            
 
         // Tossing pillows
         if (Input.GetAxis("Toss" + ControllerId) == 0)
@@ -169,7 +188,7 @@ public class Player : MonoBehaviour
                 if (Ammo.Count > 0)
                 {
                     Pillow pillowTemp = Ammo.Peek();
-                    pillowTemp.transform.parent = SlotLA;
+                    pillowTemp.transform.parent = SlotRA;
                     pillowTemp.transform.localPosition = Vector3.zero;
                     pillowTemp.transform.localRotation = Quaternion.identity;
                 }
@@ -225,7 +244,7 @@ public class Player : MonoBehaviour
         // Move the controller
         if (Input.GetAxis("Horizontal") + Input.GetAxis("Vertical") != 0 ) {
             top.SetFloat("Speed", speed);
-            //buttom.SetFloat("Speed", speed);
+            buttom.SetFloat("Speed", speed);
         }
         controller.Move(moveDirection * speed * Time.fixedDeltaTime);
     }
@@ -246,7 +265,7 @@ public class Player : MonoBehaviour
             top.SetInteger("CurrentState", 2);
             StartCoroutine(PickFinish());
             Pillow pillow = Pillows[0];
-            pillow.transform.parent = NumPillowsHeld++ == 0 ? SlotLA : SlotRA;
+            pillow.transform.parent = NumPillowsHeld++ == 0 ? SlotRA : SlotLA;
             pillow.transform.localPosition = Vector3.zero;
             pillow.transform.localRotation = Quaternion.identity;
 
@@ -268,6 +287,14 @@ public class Player : MonoBehaviour
     IEnumerator PickFinish() {
         yield return new WaitForSeconds(1f);
         top.SetInteger("CurrentState", 0);
+    }
+
+    IEnumerator AttackFinish()
+    {
+        yield return new WaitForSeconds(1f);
+        SlotRA.GetComponent<SphereCollider>().enabled = false;
+        top.SetInteger("CurrentState", 0);
+        
     }
 
     IEnumerator ThrowFinish()
@@ -292,7 +319,13 @@ public class Player : MonoBehaviour
                     // doing dmg TODO
                     break;
             }
-        }   
+        }
+
+        if (other.tag == "Punch")
+        {
+            //get punch by others
+            // TODO deal damage
+        }
     }
 
     void OnTriggerExit(Collider other)
@@ -304,6 +337,7 @@ public class Player : MonoBehaviour
             if (Pillows.Contains(pillow))
                 Pillows.Remove(pillow); // Deregister the pillow
         }
+
     }
 
     private void Awake()

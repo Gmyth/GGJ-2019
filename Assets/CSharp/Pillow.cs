@@ -7,6 +7,7 @@ public enum PillowState : int
     Picked,
     Aimed,
     Throwed,
+    Attacked,
 }
 public class Pillow : MonoBehaviour {
     [SerializeField] private MeshCollider Collider;
@@ -68,7 +69,16 @@ public class Pillow : MonoBehaviour {
 
         Collider.enabled = true; 
     }
+    public void Attack() {
+        currentState = PillowState.Attacked;
+        StartCoroutine(ReturnToIdle());
+    }
 
+    IEnumerator ReturnToIdle()
+    {
+        yield return new WaitForSeconds(1f);
+        currentState = PillowState.Idle;
+    }
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
@@ -90,6 +100,19 @@ public class Pillow : MonoBehaviour {
                     currentState = PillowState.Idle;
                     holder = null;
                 }
+            }else if (currentState == PillowState.Attacked) {
+                // doing melee damage
+                Vector3 forward = transform.forward;
+                Vector3 toOther = (other.transform.position - transform.position).normalized;
+                if (Vector3.Dot(forward, toOther) < 0.7f)
+                {
+                    other.GetComponent<Player>().Hurt(false);
+                }
+                else
+                {
+                    other.GetComponent<Player>().Hurt(true);
+                }
+                currentState = PillowState.Idle;
             }
         }
         if (other.tag == "Terrian") {
