@@ -2,22 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelEventManager : MonoBehaviour {
+public class LevelEventManager: MonoBehaviour {
 
     [SerializeField] private LevelEvent[] events;
 
     [SerializeField] private float rollTimePeriod;
-    
-	// Use this for initialization
-	void Start () {
-        //TriggerEventWithName("Migrate");
-        TriggerEventWithIndex(0);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    public static LevelEventManager Instance = null;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
+
+    // Use this for initialization
+    //   void Start () {
+
+    //       //TriggerEventWithName("Migrate");
+    //       //TriggerEventWithIndex(0);
+    //}
+
+    // Update is called once per frame
 
     private IEnumerator rollEvent()
     {
@@ -25,6 +38,7 @@ public class LevelEventManager : MonoBehaviour {
         {
             //Roll a random event
             yield return new WaitForSeconds(rollTimePeriod);
+            
         }
     }
 

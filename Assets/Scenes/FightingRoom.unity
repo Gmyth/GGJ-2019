@@ -4488,6 +4488,7 @@ GameObject:
   - component: {fileID: 258155934}
   - component: {fileID: 258155936}
   - component: {fileID: 258155935}
+  - component: {fileID: 258155937}
   m_Layer: 0
   m_Name: LevelEventManager
   m_TagString: Untagged
@@ -4554,6 +4555,19 @@ MonoBehaviour:
   spawnPoint: {fileID: 508901456}
   yakPrefab: {fileID: 1203489412465320, guid: 9caed003361cd254993bf6d7c9d44ddf, type: 2}
   createTimePeriod: 0.35
+--- !u!114 &258155937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 258155932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c2d466485a374d44a4fcc9c0036e9c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ElapsedTime: 0
+  GameLength: 120
 --- !u!43 &266167079
 Mesh:
   m_ObjectHideFlags: 0
@@ -12029,7 +12043,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh54486
+  m_Name: pb_Mesh14820
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -14354,7 +14368,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4985406351116010, guid: 45b4ad4bece746142816e6b3b5129144, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 7.75
+      value: 53.8
       objectReference: {fileID: 0}
     - target: {fileID: 4985406351116010, guid: 45b4ad4bece746142816e6b3b5129144, type: 2}
       propertyPath: m_LocalPosition.z
@@ -14391,6 +14405,16 @@ Prefab:
     - target: {fileID: 4985406351116010, guid: 45b4ad4bece746142816e6b3b5129144, type: 2}
       propertyPath: m_LocalScale.z
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114448301584514178, guid: 45b4ad4bece746142816e6b3b5129144,
+        type: 2}
+      propertyPath: isInWind
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 54895277909924644, guid: 45b4ad4bece746142816e6b3b5129144,
+        type: 2}
+      propertyPath: m_CollisionDetection
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45b4ad4bece746142816e6b3b5129144, type: 2}
@@ -16489,6 +16513,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7f438aeb6b4c2f94880f3f0aa0bcc0b4, type: 2}
+    - target: {fileID: 100002, guid: 59614d38142dd2146b5ae31c8992992d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59614d38142dd2146b5ae31c8992992d, type: 3}
   m_IsPrefabAsset: 0
@@ -18433,7 +18461,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh54168
+  m_Name: pb_Mesh14500
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
