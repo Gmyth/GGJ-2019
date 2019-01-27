@@ -34,12 +34,13 @@ public class SwimmingPool : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        Player player = other.GetComponent<Player>();
+        if (player)
         {
             AudioManager.Instance.PlaySoundEffect("EnterWater");
             SoundActivate = true;
             //Reduce player's speed
-            other.GetComponent<Player>().SetSpeed(reduceSpeedMultiplier);
+            player.SetSpeed(reduceSpeedMultiplier);
             //Slow down the pillow pitch speed
 
         }
@@ -47,11 +48,12 @@ public class SwimmingPool : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
+        Player player = other.GetComponent<Player>();
+        if (player)
         {
             SoundActivate = false;
             //Reset player's speed
-            other.GetComponent<Player>().ResetSpeed();
+            player.ResetSpeed();
         }
     }
 
