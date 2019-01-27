@@ -25,9 +25,8 @@ public class ItemSpeedChange : MonoBehaviour
 
         while (currCountdownValue > 0)
         {
-            Debug.Log("Countdown: " + currCountdownValue);
-            yield return new WaitForSeconds(1.0f);
-            currCountdownValue--;
+            yield return null;
+            currCountdownValue -= Time.deltaTime;
         }
 
         player.ResetSpeed();
