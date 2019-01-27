@@ -9,6 +9,7 @@ public enum GameState : int
 {
     Start = 0,
     MainMenu,
+    GameGuide,
     MatchSetup,
     Match,
     MatchResult,
@@ -20,6 +21,8 @@ public enum GameState : int
 /// </summary>
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private float matchDuration = 120f;
+
     private List<PlayerInfo> playerInfos;
     private LevelData levelData;
     private Player[] players;
@@ -81,7 +84,7 @@ public class GameManager : MonoBehaviour
                     case GameState.Match:
                         ResetPlayers();
                         ResetPillows();
-                        MatchTimeLeft = 120;
+                        MatchTimeLeft = matchDuration;
                         break;
                 }
 
@@ -94,6 +97,10 @@ public class GameManager : MonoBehaviour
                 {
                     case GameState.MainMenu:
                         UIManager.Singleton.Close("MainMenu");
+                        break;
+
+                    case GameState.GameGuide:
+                        UIManager.Singleton.Close("GameGuide");
                         break;
 
                     case GameState.MatchSetup:
@@ -140,7 +147,11 @@ public class GameManager : MonoBehaviour
                 {
                     case GameState.MainMenu:
                         playerInfos = null;
-                        UIManager.Singleton.Open("MainMenu");
+                        UIManager.Singleton.Open("MainMenu", UIManager.UIMode.Default, previousGameState == GameState.GameGuide ? 1 : 0);
+                        break;
+
+                    case GameState.GameGuide:
+                        UIManager.Singleton.Open("GameGuide");
                         break;
 
                     case GameState.MatchSetup:
@@ -158,7 +169,7 @@ public class GameManager : MonoBehaviour
 
                             UIManager.Singleton.Open("HUD", UIManager.UIMode.Permenent, players);
 
-                            MatchTimeLeft = 120;
+                            MatchTimeLeft = matchDuration;
                             StartCoroutine(MatchCountdown());
                         }
                         break;
@@ -177,9 +188,16 @@ public class GameManager : MonoBehaviour
 
     private GameManager() {}
 
+    public void ShowGameGuide()
+    {
+        if (currentGameState == GameState.MainMenu)
+            CurrentGameState = GameState.GameGuide;
+    }
+
     public void SetUpNewMatch()
     {
-        CurrentGameState = GameState.MatchSetup;
+        if (currentGameState == GameState.MainMenu)
+            CurrentGameState = GameState.MatchSetup;
     }
 
     public void StartNewMatch()
@@ -187,7 +205,7 @@ public class GameManager : MonoBehaviour
         CurrentGameState = GameState.Match;
     }
 
-    public void QuitMatch()
+    public void ReturnToMainMenu()
     {
         CurrentGameState = GameState.MainMenu;
     }

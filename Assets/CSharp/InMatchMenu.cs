@@ -117,7 +117,7 @@ public class InMatchMenu : UIWindow
                     break;
 
                 case 2:
-                    GameManager.Singleton.QuitMatch();
+                    GameManager.Singleton.ReturnToMainMenu();
                     break;
 
                 case 3:
