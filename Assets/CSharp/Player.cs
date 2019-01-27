@@ -181,120 +181,123 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Picking up pillows
-        if (Input.GetAxis("Pick" + ControllerId) == 0)
-            isSubmitButtonUp = true;
-        else if (isSubmitButtonUp)
+        if (!isPushedBack)
         {
-            isSubmitButtonUp = false;
-
-            if (NumPillowsHeld >= 2) // exceed the number that one player can hold
-                Drop();
-            else
-                PickUp();
-        }
-
-        //Attack
-        if (Input.GetAxis("Attack" + ControllerId) == 0)
-            isAttackButtonUp = true;
-        else if (isAttackButtonUp)
-        {
-            isAttackButtonUp = false;
-
-            top.SetInteger("CurrentState", 4);
-            StartCoroutine(AttackFinish());
-
-            if (numPillowHold == 0)
+            // Picking up pillows
+            if (Input.GetAxis("Pick" + ControllerId) == 0)
+                isSubmitButtonUp = true;
+            else if (isSubmitButtonUp)
             {
-                // that is a punch
-                SlotLA.GetComponent<SphereCollider>().enabled = true;
+                isSubmitButtonUp = false;
+
+                if (NumPillowsHeld >= 2) // exceed the number that one player can hold
+                    Drop();
+                else
+                    PickUp();
             }
-            else
+
+            //Attack
+            if (Input.GetAxis("Attack" + ControllerId) == 0)
+                isAttackButtonUp = true;
+            else if (isAttackButtonUp)
             {
-                // a Pillow Sweep
-                if(numPillowHold == 1)
+                isAttackButtonUp = false;
+
+                top.SetInteger("CurrentState", 4);
+                StartCoroutine(AttackFinish());
+
+                if (numPillowHold == 0)
                 {
-                    AudioManager.Instance.PlaySoundEffect("PillowNearFight", false);
-                    var temp = Ammo.Peek();
-                    temp.Attack();
+                    // that is a punch
+                    SlotLA.GetComponent<SphereCollider>().enabled = true;
+                }
+                else
+                {
+                    // a Pillow Sweep
+                    if (numPillowHold == 1)
+                    {
+                        AudioManager.Instance.PlaySoundEffect("PillowNearFight", false);
+                        var temp = Ammo.Peek();
+                        temp.Attack();
+                    }
                 }
             }
-        }
-            
-        // Tossing pillows
-        if (Input.GetAxis("Toss" + ControllerId) == 0)
-        {
-            if (!isCancelButtonUp && NumPillowsHeld > 0)
+
+            // Tossing pillows
+            if (Input.GetAxis("Toss" + ControllerId) == 0)
             {
-                Pillow pillow = Ammo.Dequeue();
-                pillow.Throw(model.transform.forward, model.transform.up, (emPower - 0.08f + 1) * powerThrowForward, (emPower + 1) * powerThrowUpper);
-                pillow.transform.parent = transform.parent;
-
-                top.SetInteger("CurrentState", 3);
-                StartCoroutine(ThrowFinish());
-                emPower = 0;
-                NumPillowsHeld--;
-            }
-
-            isCancelButtonUp = true;
-        }
-        else if (isCancelButtonUp)
-        {
-            isCancelButtonUp = false;
-
-            if (NumPillowsHeld > 0)
-            {
-                Pillow pillow = Ammo.Peek();
-                pillow.ReadyToGo();
-
-                if (numPillowHold == 1)
+                if (!isCancelButtonUp && NumPillowsHeld > 0)
                 {
-                    pillow.transform.parent = SlotRA;
-                    pillow.transform.localPosition = Vector3.zero;
-                    pillow.transform.localRotation = Quaternion.identity;
+                    Pillow pillow = Ammo.Dequeue();
+                    pillow.Throw(model.transform.forward, model.transform.up, (emPower - 0.08f + 1) * powerThrowForward, (emPower + 1) * powerThrowUpper);
+                    pillow.transform.parent = transform.parent;
+
+                    top.SetInteger("CurrentState", 3);
+                    StartCoroutine(ThrowFinish());
+                    emPower = 0;
+                    NumPillowsHeld--;
                 }
 
-                emPower = minThrowPower;
-                top.SetInteger("CurrentState", 1);
+                isCancelButtonUp = true;
             }
-        }
-
-        if (!isCancelButtonUp && emPower > 0)
-            emPower = Mathf.Min(emPower + powerToAddEachFrame * Time.fixedDeltaTime, maxThrowPower);
-
-        if (controller.isGrounded)
-        {
-            // We are grounded, so recalculate
-            // move direction directly from axes
-
-            moveDirection = new Vector3(Input.GetAxis("Horizontal" + ControllerId), 0.0f, Input.GetAxis("Vertical" + ControllerId));
-            if (moveDirection.sqrMagnitude > 0.2f)
+            else if (isCancelButtonUp)
             {
-                //moveDirection = Quaternion.Euler(0, -45, 0) * transform.TransformDirection(moveDirection);
-                moveDirection = moveDirection.normalized;
+                isCancelButtonUp = false;
 
-                top.SetFloat("Speed", speed);
-                buttom.SetFloat("Speed", speed);
-                model.transform.forward = moveDirection;
+                if (NumPillowsHeld > 0)
+                {
+                    Pillow pillow = Ammo.Peek();
+                    pillow.ReadyToGo();
+
+                    if (numPillowHold == 1)
+                    {
+                        pillow.transform.parent = SlotRA;
+                        pillow.transform.localPosition = Vector3.zero;
+                        pillow.transform.localRotation = Quaternion.identity;
+                    }
+
+                    emPower = minThrowPower;
+                    top.SetInteger("CurrentState", 1);
+                }
             }
-            else
+
+            if (!isCancelButtonUp && emPower > 0)
+                emPower = Mathf.Min(emPower + powerToAddEachFrame * Time.fixedDeltaTime, maxThrowPower);
+
+            if (controller.isGrounded)
             {
-                moveDirection = Vector3.zero;
+                // We are grounded, so recalculate
+                // move direction directly from axes
 
-                top.SetFloat("Speed", 0);
-                buttom.SetFloat("Speed", 0);
-            }   
+                moveDirection = new Vector3(Input.GetAxis("Horizontal" + ControllerId), 0.0f, Input.GetAxis("Vertical" + ControllerId));
+                if (moveDirection.sqrMagnitude > 0.2f)
+                {
+                    //moveDirection = Quaternion.Euler(0, -45, 0) * transform.TransformDirection(moveDirection);
+                    moveDirection = moveDirection.normalized;
 
-            //if (Input.GetButton("Jump"))
-            //{
-            //    moveDirection.y = jumpSpeed;
-            //}
+                    top.SetFloat("Speed", speed);
+                    buttom.SetFloat("Speed", speed);
+                    model.transform.forward = moveDirection;
+                }
+                else
+                {
+                    moveDirection = Vector3.zero;
+
+                    top.SetFloat("Speed", 0);
+                    buttom.SetFloat("Speed", 0);
+                }
+
+                //if (Input.GetButton("Jump"))
+                //{
+                //    moveDirection.y = jumpSpeed;
+                //}
+            }
+
+            // Apply gravity
+            moveDirection.y = moveDirection.y - (gravity * Time.fixedDeltaTime);
+
+            controller.Move(moveDirection * speed * Time.fixedDeltaTime);
         }
-
-        // Apply gravity
-        moveDirection.y = moveDirection.y - (gravity * Time.fixedDeltaTime);
-
-        controller.Move(moveDirection * speed * Time.fixedDeltaTime);
     }
 
     public void Drop()
@@ -408,5 +411,27 @@ public class Player : MonoBehaviour
     public void ResetSpeed()
     {
         speed = defaultSpeed;
+    }
+
+    public void PushBack(Vector3 direction, float duration)
+    {
+        StartCoroutine(PushingBack(direction, duration));
+    }
+
+    private bool isPushedBack = false;
+
+    private IEnumerator PushingBack(Vector3 direction, float duration)
+    {
+        isPushedBack = true;
+
+        while (duration > 0)
+        {
+            transform.Translate(direction * 1f * Time.deltaTime, Space.Self);
+            yield return null;
+            duration -= Time.deltaTime;
+        }
+
+        isPushedBack = false;
+        yield break;
     }
 }

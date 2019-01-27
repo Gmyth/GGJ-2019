@@ -45,31 +45,35 @@ public class Yak : MonoBehaviour {
         migrateDirection = direction;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision other)
     {
-        if (collision.gameObject.tag == "Pillow")
-        {
-            //Stop or bounce back the pillow
-
-        }
-
-        if (collision.gameObject.tag == "Boarder")
-        {
+        if (other.gameObject.tag == "Boarder")
             StopMigrate();
-        }
 
+        if (other.transform.GetComponent<Player>() != null)
+        {
+            Vector3 orientation = other.transform.position - transform.position;
+            orientation.y = 0;
+
+            other.transform.GetComponent<Player>().PushBack(orientation.normalized, 1f);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Player")
-        {
-            Rigidbody rigidbody = other.transform.parent.GetComponent<Rigidbody>();
-            //Bounce back the player
-            rigidbody.isKinematic = false;
-            rigidbody.AddForce(-other.transform.right * bounceForce);
-            Debug.Log(-other.transform.right * bounceForce);
-        }
+        //if (other.gameObject.tag == "Player")
+        //{
+        //    Rigidbody rigidbody = other.transform.parent.GetComponent<Rigidbody>();
+        //    //Bounce back the player
+        //    rigidbody.isKinematic = false;
+        //    rigidbody.AddForce(-other.transform.right * bounceForce);
+        //    Debug.Log(-other.transform.right * bounceForce);
+        //}
 
         if (other.gameObject.tag == "RoutePoint")
         {         
