@@ -47,7 +47,7 @@ public class Ghost : MonoBehaviour {
         {
             //Stop or bounce back the pillow
             collision.transform.parent.GetComponent<Player>().SetSpeed(0);
-            playerlist.Add(collision.GetComponent<Player>());
+            playerlist.Add(collision.transform.parent.GetComponent<Player>());
             particle.SetActive(true);
             Found = true;
         }
