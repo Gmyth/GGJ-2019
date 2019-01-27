@@ -4017,7 +4017,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventName: Migrate
-  duration: 10
+  duration: 2
   MigratePoints: []
   spawnPoint: {fileID: 1066615148}
   yakPrefab: {fileID: 1203489412465320, guid: 9caed003361cd254993bf6d7c9d44ddf, type: 2}

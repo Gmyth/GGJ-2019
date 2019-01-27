@@ -83,11 +83,13 @@ public class MatchSetup : UIWindow
         {
             preparedPlayers.Remove(id);
             playerInfos[id].IsReady = false;
+            AudioManager.Instance.PlaySoundEffect("Unload");
         }
         else
         {
             preparedPlayers.Add(id);
             playerInfos[id].IsReady = true;
+            AudioManager.Instance.PlaySoundEffect("Ready2");
 
             if (numPlayers > 1 && preparedPlayers.Count == numPlayers)
                 countdownStartTime = TimeUtility.localTimeInMilisecond;
@@ -98,6 +100,7 @@ public class MatchSetup : UIWindow
     private Dictionary<string, bool> isStartButtonUp = new Dictionary<string, bool>(6);
 
     private long countdownStartTime = 0;
+    string temp = null;
     private void Update()
     {
         if (!(numPlayers > 1 && preparedPlayers.Count == numPlayers) && countdownStartTime != 0)
@@ -109,8 +112,15 @@ public class MatchSetup : UIWindow
         if (countdownStartTime > 0)
         {
             long duration = TimeUtility.localTimeInMilisecond - countdownStartTime;
-            countdown.text = Mathf.RoundToInt(5 - duration / 1000f).ToString();
-
+            countdown.text = Mathf.RoundToInt(5 - duration / 1000f).ToString();          
+            if(temp != countdown.text)
+            {
+                if(countdown.text == "0")
+                    AudioManager.Instance.PlaySoundEffect("CountDownOver2", false, false);
+                else
+                    AudioManager.Instance.PlaySoundEffect("CountDown03", false, false);
+                temp = countdown.text;                
+            }
             if (duration > 5000)
             {
                 GameManager.Singleton.StartNewMatch();
@@ -129,6 +139,8 @@ public class MatchSetup : UIWindow
 #if UNITY_EDITOR
                     Debug.Log(LogUtility.MakeLogString("MatchSetup", "A new player has jointed the game. (" + controllerId + ")"));
 #endif
+                    AudioManager.Instance.PlaySoundEffect("Coin");
+
                     isStartButtonUp[controllerId] = false;
                     PlayerInfo playerInfo = new PlayerInfo(numPlayers, "Player " + (numPlayers + 1), controllerId);
                     playerInfos.Add(playerInfo);

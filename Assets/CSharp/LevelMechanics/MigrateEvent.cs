@@ -20,13 +20,14 @@ public class MigrateEvent : LevelEvent {
     {
         FindSpawnPoint();
         StartCoroutine("CreateYaks");
-        base.OnStart();
+        base.OnStart();    
     }
 
     override public void OnEnd()
     {
         StopCoroutine("CreateYaks");
         base.OnEnd();
+        AudioManager.Instance.StopSoundEffect("YakMarching", true);
     }
 
     private void FindSpawnPoint()
@@ -36,6 +37,11 @@ public class MigrateEvent : LevelEvent {
 
     private IEnumerator CreateYaks()
     {
+        AudioManager.Instance.PlaySoundEffect("YakMooing");
+        yield return new WaitForSecondsRealtime(2f);
+        AudioManager.Instance.PlaySoundEffect("YakMooing");
+        yield return new WaitForSecondsRealtime(5f);
+        AudioManager.Instance.PlaySoundEffect("YakMarching", true, true, 1);
         while (true)
         {
             GameObject go = Instantiate(yakPrefab, MigratePoints[1].transform.position, Quaternion.identity);
