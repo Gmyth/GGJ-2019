@@ -279,8 +279,8 @@ public class GameManager : MonoBehaviour
     {
         while (MatchTimeLeft > 0)
         {
-            MatchTimeLeft -= Time.deltaTime;
             yield return null;
+            MatchTimeLeft -= Time.deltaTime;
         }
 
         MatchTimeLeft = 0;
