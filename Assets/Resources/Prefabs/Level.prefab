@@ -1765,7 +1765,6 @@ GameObject:
   - component: {fileID: 114991094646611228}
   - component: {fileID: 114217919930482276}
   - component: {fileID: 114451691408152570}
-  - component: {fileID: 114337001223949108}
   - component: {fileID: 114693443146059408}
   - component: {fileID: 114662846011063694}
   m_Layer: 0
@@ -8312,21 +8311,6 @@ MonoBehaviour:
   - {fileID: 114451691408152570}
   - {fileID: 114693443146059408}
   rollTimePeriod: 0
---- !u!114 &114337001223949108
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1635425769187326}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf9ed4eba9f070647bc5bf30ee0e6c8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventName: Wind
-  duration: 20
-  blowDirection: {x: 0, y: 0, z: 0}
-  windForce: 0
 --- !u!114 &114451691408152570
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8339,7 +8323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventName: Migrate
-  duration: 20
+  duration: 15
   MigratePoints: []
   spawnPoint: {fileID: 4930396472522612}
   yakPrefab: {fileID: 1203489412465320, guid: 9caed003361cd254993bf6d7c9d44ddf, type: 2}
@@ -8673,7 +8657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventName: Ghost
-  duration: 20
+  duration: 15
   MigratePoints: []
   spawnPoint: {fileID: 4111249016245506}
   ghost: {fileID: 1070883032333262, guid: 036709b0819fb8443bcda150ddcf45a3, type: 2}
@@ -8703,4 +8687,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ElapsedTime: 0
-  GameLength: 120

@@ -46,7 +46,7 @@ public class Ghost : MonoBehaviour {
         if (collision.tag == "Player")
         {
             //Stop or bounce back the pillow
-            collision.GetComponent<Player>().SetSpeed(0);
+            collision.transform.parent.GetComponent<Player>().SetSpeed(0);
             playerlist.Add(collision.GetComponent<Player>());
             particle.SetActive(true);
             Found = true;
@@ -72,7 +72,7 @@ public class Ghost : MonoBehaviour {
         if (other.tag == "Player")
         {
             //Stop or bounce back the pillow
-            other.GetComponent<Player>().ResetSpeed();
+            other.transform.parent.GetComponent<Player>().ResetSpeed();
         }
     }
 
