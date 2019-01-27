@@ -34,7 +34,7 @@ public class PlayerWidget : UIWidget
 
     private void UpdateScore(int score)
     {
-        scoreNumber.text = "Score: " + score.ToString();
+        scoreNumber.text = string.Format("Score: {0:D3}", score);
     }
 
     private void UpdatePillows(int numPillowsHeld)

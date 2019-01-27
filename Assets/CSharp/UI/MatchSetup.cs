@@ -130,7 +130,7 @@ public class MatchSetup : UIWindow
                     Debug.Log(LogUtility.MakeLogString("MatchSetup", "A new player has jointed the game. (" + controllerId + ")"));
 #endif
                     isStartButtonUp[controllerId] = false;
-                    PlayerInfo playerInfo = new PlayerInfo(numPlayers, "Player " + numPlayers, controllerId);
+                    PlayerInfo playerInfo = new PlayerInfo(numPlayers, "Player " + (numPlayers + 1), controllerId);
                     playerInfos.Add(playerInfo);
 
                     playerInfoWidgets[numPlayers].Initialize(playerInfo);

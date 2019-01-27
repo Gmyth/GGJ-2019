@@ -527,17 +527,21 @@ MonoBehaviour:
   BGM: {fileID: 0}
   BGMSource: {fileID: 83633326}
   SoundFX:
-  - {fileID: 8300000, guid: 9bc7a9238a4929d4c8f830b84b7c0c69, type: 3}
-  - {fileID: 8300000, guid: dc589a5956d1a2241b74c9d1f5ac7297, type: 3}
-  - {fileID: 8300000, guid: 0ba2b5dd5de32c244b1297d86193902e, type: 3}
-  - {fileID: 8300000, guid: c78bbf5676973f342970b301d3181661, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   EffectSource:
   - {fileID: 83633326}
   - {fileID: 83633325}
   - {fileID: 83633324}
   - {fileID: 83633323}
+  InterfaceEffect: []
+  InterfaceSource: {fileID: 0}
   LowPitchRange: 0.95
   HighPitchRange: 1.05
+  GlobalEffectVolume: 0.7
+  GlobalBGMVoume: 0.45
 --- !u!4 &83633328
 Transform:
   m_ObjectHideFlags: 0
@@ -559,6 +563,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 258120554}
+  - component: {fileID: 258120553}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -566,6 +571,17 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &258120553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 258120552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c7e24078f04dfc4bb6c00e72f552d52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &258120554
 Transform:
   m_ObjectHideFlags: 0

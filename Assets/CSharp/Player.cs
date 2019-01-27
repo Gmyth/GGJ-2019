@@ -157,9 +157,6 @@ public class Player : MonoBehaviour
         ControllerId = playerInfo.controllerId;
         Name = playerInfo.Name;
         Score = 0;
-
-        // let the gameObject fall down
-        gameObject.transform.position = new Vector3(0, 5, 0);
     }
 
     private bool isSubmitButtonUp = true;
@@ -250,10 +247,10 @@ public class Player : MonoBehaviour
             // We are grounded, so recalculate
             // move direction directly from axes
 
-            moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
+            moveDirection = new Vector3(Input.GetAxis("Horizontal" + ControllerId), 0.0f, Input.GetAxis("Vertical" + ControllerId));
             if (moveDirection.sqrMagnitude > 0.2f)
             {
-                moveDirection = Quaternion.Euler(0, 45, 0) * transform.TransformDirection(moveDirection);
+                moveDirection = Quaternion.Euler(0, -45, 0) * transform.TransformDirection(moveDirection);
                 moveDirection = moveDirection.normalized;
 
                 top.SetFloat("Speed", speed);
@@ -287,12 +284,12 @@ public class Player : MonoBehaviour
 
     public void PickUp()
     {
-#if UNITY_EDITOR
-        Debug.Log(LogUtility.MakeLogString("Player", name + " picked up a pillow."));
-#endif
-
         if (Pillows.Count > 0)
         {
+#if UNITY_EDITOR
+            Debug.Log(LogUtility.MakeLogString("Player", name + " picked up a pillow."));
+#endif
+
             top.SetInteger("CurrentState", 2);
             StartCoroutine(PickFinish());
             Pillow pillow = Pillows[0];
@@ -372,14 +369,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        Id = 0;
-        ControllerId = "_J1";
-        Name = "Tester";
-
         controller = GetComponent<CharacterController>();
-
-        // let the gameObject fall down
-        gameObject.transform.position = new Vector3(0, 5, 0);
 
         OnScoreChange = new EventOnDataChange<int>();
         OnNumPillowsHeldChange = new EventOnDataChange<int>();
