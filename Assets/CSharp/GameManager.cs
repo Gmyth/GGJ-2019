@@ -105,10 +105,10 @@ public class GameManager : MonoBehaviour
                             int numPlayers = playerInfos.Count;
 
                             List<SpawnData> spawnDatas = new List<SpawnData>();
-                            spawnDatas.Add(new SpawnData(new Vector3(3, 2, 0), Quaternion.Euler(0, 90, 0)));
-                            spawnDatas.Add(new SpawnData(new Vector3(10, 2, -7), Quaternion.Euler(0, 45, 0)));
-                            spawnDatas.Add(new SpawnData(new Vector3(20, 2, -16), Quaternion.Euler(0, 45, 0)));
-                            spawnDatas.Add(new SpawnData(new Vector3(25, 2, -24), Quaternion.Euler(0, 0, 0)));
+                            spawnDatas.Add(new SpawnData(new Vector3(8, 2, 5), Quaternion.Euler(0, 90, 0)));
+                            spawnDatas.Add(new SpawnData(new Vector3(15, 2, -2), Quaternion.Euler(0, 45, 0)));
+                            spawnDatas.Add(new SpawnData(new Vector3(25, 2, -11), Quaternion.Euler(0, 45, 0)));
+                            spawnDatas.Add(new SpawnData(new Vector3(30, 2, -19), Quaternion.Euler(0, 0, 0)));
 
                             players = new Player[numPlayers];
                             Player player;
