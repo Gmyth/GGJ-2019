@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 143771703848244970}
   m_Layer: 0
   m_Name: Player1
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 136930153381632572}
   m_Layer: 0
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -736,7 +736,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.1253512
+  m_Radius: 0.6
   m_Height: 4.9698973
   m_Direction: 1
   m_Center: {x: -0.10284376, y: 0.006409645, z: 0.113854885}
@@ -749,7 +749,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 1.4164429
+  m_Radius: 0.9
   m_Height: 5.6327477
   m_Direction: 1
   m_Center: {x: -0.020861983, y: 1.2213821, z: 0.0807333}

@@ -42,4 +42,17 @@ public class MatchResult : UIWindow
         while (index < maxNumRecords)
             playerRecordWidgets[index++].Hide();
     }
+
+    private bool isCancelButtonUp = false;
+
+    private void Update()
+    {
+        if (Input.GetAxis("Cancel") == 0)
+            isCancelButtonUp = true;
+        else if (isCancelButtonUp)
+        {
+            isCancelButtonUp = false;
+            GameManager.Singleton.ReturnToMainMenu();
+        }
+    }
 }

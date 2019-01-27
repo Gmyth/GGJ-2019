@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 136501927401948222}
   m_Layer: 0
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 143039432285629346}
   m_Layer: 0
   m_Name: Player2
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -277,7 +277,7 @@ Transform:
   m_GameObject: {fileID: 1238306515258232}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 17, y: 17, z: 17}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children:
   - {fileID: 4053584343866752}
   m_Father: {fileID: 4791845706187002}
@@ -736,7 +736,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.1977646
+  m_Radius: 0.75
   m_Height: 5.7181697
   m_Direction: 1
   m_Center: {x: -0.10284376, y: 1.3219206, z: 0.113854885}
@@ -749,10 +749,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 1.7198294
+  m_Radius: 1
   m_Height: 7.2257996
   m_Direction: 1
-  m_Center: {x: -0.08626425, y: 2.6058197, z: 0.0807333}
+  m_Center: {x: 0, y: 3, z: 0}
 --- !u!143 &143039432285629346
 CharacterController:
   m_ObjectHideFlags: 1
