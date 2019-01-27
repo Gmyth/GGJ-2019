@@ -13,14 +13,20 @@ public class PlayerInfoWidget : UIWidget
         this.playerInfo = playerInfo;
 
         playerInfo.OnNameChange.AddListener(UpdatePlayerName);
+        playerInfo.OnReadinessChange.AddListener(UpdateReadiness);
 
-        UpdatePlayerName(playerInfo.Name);
-        readiness.SetActive(false);
+        UpdateAll();
     }
 
-    public void ToggleReadiness()
+    private void UpdateAll()
     {
-        readiness.SetActive(!readiness.activeSelf);
+        UpdatePlayerName(playerInfo.Name);
+        UpdateReadiness(false);
+    }
+
+    private void UpdateReadiness(bool isReady)
+    {
+        readiness.SetActive(isReady);
     }
 
     private void UpdatePlayerName(string name)

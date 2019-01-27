@@ -53,5 +53,6 @@ crashlytics-build.properties
 *.ide-wal
 *.ide-shm
 *.ide
-Library/*
-Library/shadercompiler-UnityShaderCompiler.exe0.log
+/Library
+/.vs
+Assets/Animation.meta
