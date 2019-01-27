@@ -1,35 +1,27 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
 public class ItemSpeedChange : MonoBehaviour
 {
-    float currCountdownValue;
-    Player player = null;
-
     [SerializeField] private float duration = 10f;
     [SerializeField] private float speedfactor = 1f;
-
-    void Awake()
-    {
-    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            gameObject.SetActive(false);
-            player = other.GetComponent<Player>();
-        }
+            Player player = other.GetComponent<Player>();
+            player.SetSpeed(speedfactor);
+            player.StartCoroutine(StartCountdown(player, duration));
 
-        player.SetSpeed(speedfactor);
-        player.StartCoroutine(StartCountdown(player, duration));
+            gameObject.SetActive(false);
+        }
     }
 
     public IEnumerator StartCountdown(Player player, float countdownValue = 10)
     {
-        currCountdownValue = countdownValue;
+        float currCountdownValue = countdownValue;
 
         while (currCountdownValue > 0)
         {
@@ -38,6 +30,6 @@ public class ItemSpeedChange : MonoBehaviour
             currCountdownValue--;
         }
 
-        player.GetComponent<Player>().ResetSpeed();
+        player.ResetSpeed();
     }
 }
