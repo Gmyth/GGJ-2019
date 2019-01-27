@@ -64,6 +64,7 @@
     <Compile Include="Assets\CSharp\Events.cs" />
     <Compile Include="Assets\CSharp\GameManager.cs" />
     <Compile Include="Assets\CSharp\LevelMechanics\Bed.cs" />
+    <Compile Include="Assets\CSharp\LevelMechanics\ItemSpeedChange.cs" />
     <Compile Include="Assets\CSharp\LevelMechanics\LevelEvent.cs" />
     <Compile Include="Assets\CSharp\LevelMechanics\LevelEventManager.cs" />
     <Compile Include="Assets\CSharp\LevelMechanics\MigrateEvent.cs" />
