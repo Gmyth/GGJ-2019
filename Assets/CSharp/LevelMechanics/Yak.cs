@@ -73,6 +73,7 @@ public class Yak : MonoBehaviour {
     {
         if (other.gameObject.tag == "Player")
         {
+            other.transform.parent.GetComponent<Player>().PushBack();
             //Bounce back the player
             //other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
 
@@ -102,7 +103,6 @@ public class Yak : MonoBehaviour {
                 }               
             }
         }
-
     }
 
     private IEnumerator Countdown(Player p)
