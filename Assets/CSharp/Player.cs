@@ -183,7 +183,7 @@ public class Player : MonoBehaviour
             if (numPillowHold == 0)
             {
                 // that is a punch
-                SlotRA.GetComponent<SphereCollider>().enabled = true;
+                SlotLA.GetComponent<SphereCollider>().enabled = true;
             }
             else {
                 // a Pillow Sweep
@@ -315,7 +315,7 @@ public class Player : MonoBehaviour
     IEnumerator AttackFinish()
     {
         yield return new WaitForSeconds(1f);
-        SlotRA.GetComponent<SphereCollider>().enabled = false;
+        SlotLA.GetComponent<SphereCollider>().enabled = false;
         top.SetInteger("CurrentState", 0);
     }
 
