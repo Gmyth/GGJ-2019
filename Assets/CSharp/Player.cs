@@ -96,6 +96,9 @@ public class Player : MonoBehaviour
 
     // Use this for initialization
     [SerializeField]private float speed;
+
+    private float defaultSpeed;
+
     [SerializeField]private float jumpSpeed;
     [SerializeField]private float gravity;
 
@@ -161,6 +164,11 @@ public class Player : MonoBehaviour
 
     private bool isSubmitButtonUp = true;
     private bool isCancelButtonUp = true;
+
+    private void Start()
+    {
+        defaultSpeed = speed;
+    }
 
     void FixedUpdate()
     {
@@ -376,4 +384,15 @@ public class Player : MonoBehaviour
         OnScoreChange = new EventOnDataChange<int>();
         OnNumPillowsHeldChange = new EventOnDataChange<int>();
     }
+
+    public void SetSpeed(float s)
+    {
+        speed *= s;
+    }
+
+    public void ResetSpeed()
+    {
+        speed = defaultSpeed;
+    }
+
 }

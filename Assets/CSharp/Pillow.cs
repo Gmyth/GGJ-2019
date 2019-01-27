@@ -13,9 +13,13 @@ public class Pillow : MonoBehaviour {
     [SerializeField] private MeshCollider Collider;
     public PillowState currentState;// if the pillow is throwed, then do damage
     private GameObject holder;
-	// Use this for initialization
-	void Start () {
+
+    public bool isInWind;
+
+    // Use this for initialization
+    void Start () {
 	    currentState = PillowState.Idle;
+        isInWind = false;
     }
 	
 	void FixedUpdate()
@@ -68,7 +72,21 @@ public class Pillow : MonoBehaviour {
         // GetComponent<MeshCollider>().enabled = true;
 
         Collider.enabled = true; 
+
+
+        if (isInWind)
+        {
+            StartCoroutine("FlyInTheWind");
+        }
+
     }
+
+    private IEnumerator FlyInTheWind()
+    {
+        yield return new WaitForSeconds(0.1f);
+        GetComponent<Rigidbody>().AddForce(Vector3.forward * 2500f);
+    }
+
     public void Attack() {
         currentState = PillowState.Attacked;
         StartCoroutine(ReturnToIdle());
