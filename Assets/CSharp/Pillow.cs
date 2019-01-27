@@ -134,12 +134,12 @@ public class Pillow : MonoBehaviour
                     if (Vector3.Dot(forward, orientation) < 0.7f)
                     {
                         player.Hurt(false);
-                        player.Score += Mathf.FloorToInt(CalculateDamage(d));
+                        holder.Score += Mathf.FloorToInt(CalculateDamage(d));
                     }
                     else
                     {
                         player.Hurt(true);
-                        player.Score += Mathf.FloorToInt(1.2f * CalculateDamage(d));
+                        holder.Score += Mathf.FloorToInt(1.2f * CalculateDamage(d));
                     }
                     AudioManager.Instance.PlaySoundEffect("PillowNearFight", false);
                     currentState = PillowState.Idle;
@@ -157,12 +157,12 @@ public class Pillow : MonoBehaviour
                     if (Vector3.Dot(forward, orientation) < 0.7f)
                     {
                         other.GetComponent<Player>().Hurt(false);
-                        player.Score += 1;
+                        holder.Score += 1;
                     }
                     else
                     {
                         other.GetComponent<Player>().Hurt(true);
-                        player.Score += 2;
+                        holder.Score += 2;
                     }
 
                     currentState = PillowState.Idle;
