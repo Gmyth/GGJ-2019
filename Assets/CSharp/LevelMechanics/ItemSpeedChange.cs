@@ -19,7 +19,7 @@ public class ItemSpeedChange : MonoBehaviour {
             gameObject.SetActive(false);
             player = other.gameObject;
         }
-        //player.GetComponent<Player>().SetSpeed(speedfactor);
+        player.GetComponent<Player>().SetSpeed(speedfactor);
         StartCoroutine(StartCountdown(duration));
         
     }
@@ -32,6 +32,6 @@ public class ItemSpeedChange : MonoBehaviour {
             yield return new WaitForSeconds(1.0f);
             currCountdownValue--;         
         }
-        //player.GetComponent<Player>().ResetSpeed();
+        player.GetComponent<Player>().ResetSpeed();
     }
 }

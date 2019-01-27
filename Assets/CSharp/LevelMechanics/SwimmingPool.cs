@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SwimmingPool : MonoBehaviour {
 
+    [SerializeField] private float reducedSpeed;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -18,8 +20,19 @@ public class SwimmingPool : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
-            //Reduce the player's speed
+            //Reduce player's speed
+            other.GetComponent<Player>().SetSpeed(reducedSpeed);
             //Slow down the pillow pitch speed
+
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            //Reset player's speed
+            other.GetComponent<Player>().ResetSpeed();
         }
     }
 
