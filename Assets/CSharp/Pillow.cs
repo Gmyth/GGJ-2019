@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 public enum PillowState : int
 {
@@ -9,15 +8,20 @@ public enum PillowState : int
     Throwed,
     Attacked,
 }
-public class Pillow : MonoBehaviour {
+public class Pillow : MonoBehaviour
+{
     [SerializeField] private MeshCollider Collider;
+
     public PillowState currentState;// if the pillow is throwed, then do damage
-    private GameObject holder;
+    private Player holder;
 
     public bool isInWind;
 
+    private Vector3 launchPoint;
+
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
 	    currentState = PillowState.Idle;
         isInWind = false;
     }
@@ -51,7 +55,7 @@ public class Pillow : MonoBehaviour {
         Collider.enabled = false;
     }
 
-    public void Pick(GameObject player)
+    public void Pick(Player player)
     {
         currentState = PillowState.Picked;
 
@@ -64,15 +68,15 @@ public class Pillow : MonoBehaviour {
     {
         currentState = PillowState.Throwed;
 
-        GetComponent<Rigidbody>().isKinematic = false;
+        launchPoint = transform.position;
 
-        GetComponent<Rigidbody>().velocity = forward * ForwardForce + Up * UpperForce;
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        rigidbody.isKinematic = false;
+        rigidbody.velocity = forward * ForwardForce + Up * UpperForce;
+        rigidbody.useGravity = true;
 
-        GetComponent<Rigidbody>().useGravity = true;
         // GetComponent<MeshCollider>().enabled = true;
-
         Collider.enabled = true; 
-
 
         if (isInWind)
         {
@@ -101,41 +105,64 @@ public class Pillow : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
+            Player player = other.GetComponent<Player>();
+
             if (currentState == PillowState.Throwed)
             {
-                // doing dmg TODO
-                if (other.GetComponent<Player>().model == holder){
+                if (player != holder)
+                {
                     Vector3 forward = transform.forward;
-                    Vector3 toOther = (other.transform.position - transform.position).normalized;
-                    if (Vector3.Dot(forward, toOther) < 0.7f)
+                    Vector3 orientation = (other.transform.position - transform.position).normalized;
+
+                    float d = Vector3.Distance(other.transform.position, launchPoint);
+                    if (Vector3.Dot(forward, orientation) < 0.7f)
+                    {
+                        player.Hurt(false);
+                        player.Score += Mathf.FloorToInt(CalculateDamage(d));
+                    }
+                    else
+                    {
+                        player.Hurt(true);
+                        player.Score += Mathf.FloorToInt(1.2f * CalculateDamage(d));
+                    }
+
+                    currentState = PillowState.Idle;
+                    holder = null;
+                }
+            }
+            else if (currentState == PillowState.Attacked)
+            {
+                // doing melee damage
+                if (player != holder)
+                {
+                    Vector3 forward = transform.forward;
+                    Vector3 orientation = (other.transform.position - transform.position).normalized;
+
+                    float d = Vector3.Distance(other.transform.position, launchPoint);
+                    if (Vector3.Dot(forward, orientation) < 0.7f)
                     {
                         other.GetComponent<Player>().Hurt(false);
+                        player.Score += 1;
                     }
                     else
                     {
                         other.GetComponent<Player>().Hurt(true);
+                        player.Score += 2;
                     }
+
                     currentState = PillowState.Idle;
-                    holder = null;
                 }
-            }else if (currentState == PillowState.Attacked) {
-                // doing melee damage
-                Vector3 forward = transform.forward;
-                Vector3 toOther = (other.transform.position - transform.position).normalized;
-                if (Vector3.Dot(forward, toOther) < 0.7f)
-                {
-                    other.GetComponent<Player>().Hurt(false);
-                }
-                else
-                {
-                    other.GetComponent<Player>().Hurt(true);
-                }
-                currentState = PillowState.Idle;
             }
         }
-        if (other.tag == "Terrian") {
+        if (other.tag == "Terrian")
+        {
             currentState = PillowState.Idle;
             holder = null;
         }
+    }
+
+    private float CalculateDamage(float d)
+    {
+        return Mathf.Max(0, d * d / 10 - 2) + 5;
     }
 }
