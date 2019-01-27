@@ -379,7 +379,8 @@ public class Player : MonoBehaviour
 
     public void SetSpeed(float s)
     {
-        speed *= s;
+        speed = speed * s;
+        Debug.Log("Speed is now " + speed);
     }
 
     public void ResetSpeed()

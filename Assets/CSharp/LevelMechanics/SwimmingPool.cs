@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SwimmingPool : MonoBehaviour {
 
-    [SerializeField] private float reducedSpeed;
+    [SerializeField] private float reduceSpeedMultiplier;
 
 	// Use this for initialization
 	void Start () {
@@ -16,12 +16,12 @@ public class SwimmingPool : MonoBehaviour {
 		
 	}
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
             //Reduce player's speed
-            other.GetComponent<Player>().SetSpeed(reducedSpeed);
+            other.GetComponent<Player>().SetSpeed(reduceSpeedMultiplier);
             //Slow down the pillow pitch speed
 
         }
