@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MainMenu : UIWindow
 {
@@ -61,7 +60,7 @@ public class MainMenu : UIWindow
     private void Update()
     {
         float verticalInput = Input.GetAxis("Vertical");
-        Debug.Log(verticalInput);
+
         if (verticalInput <= 0.5f)
             isUpButtonUp = true;
         else if (isUpButtonUp)
