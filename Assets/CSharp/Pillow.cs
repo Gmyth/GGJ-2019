@@ -125,7 +125,7 @@ public class Pillow : MonoBehaviour
                         player.Hurt(true);
                         player.Score += Mathf.FloorToInt(1.2f * CalculateDamage(d));
                     }
-
+                    AudioManager.Instance.PlaySoundEffect("PillowNearFight", false);
                     currentState = PillowState.Idle;
                     holder = null;
                 }
@@ -152,6 +152,9 @@ public class Pillow : MonoBehaviour
 
                     currentState = PillowState.Idle;
                 }
+
+                AudioManager.Instance.PlaySoundEffect("PillowNearFight", false);
+
             }
         }
         if (other.tag == "Terrian")
