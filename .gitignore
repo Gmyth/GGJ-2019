@@ -57,3 +57,4 @@ crashlytics-build.properties
 /.vs
 .vs/*
 .vs/GGJ-2019/v15/Server/sqlite3/storage.ide
+/.idea
