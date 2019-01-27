@@ -121,7 +121,7 @@ public class Pillow : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            Player player = other.GetComponent<Player>();
+            Player player = other.transform.parent.GetComponent<Player>();
 
             if (currentState == PillowState.Throwed)
             {
@@ -156,12 +156,12 @@ public class Pillow : MonoBehaviour
 
                     if (Vector3.Dot(forward, orientation) < 0.7f)
                     {
-                        other.GetComponent<Player>().Hurt(false);
+                        other.transform.parent.GetComponent<Player>().Hurt(false);
                         holder.Score += 1;
                     }
                     else
                     {
-                        other.GetComponent<Player>().Hurt(true);
+                        other.transform.parent.GetComponent<Player>().Hurt(true);
                         holder.Score += 2;
                     }
 
