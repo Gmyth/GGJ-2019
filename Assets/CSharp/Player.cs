@@ -248,7 +248,7 @@ public class Player : MonoBehaviour
 
     public void SetSpeed(float s)
     {
-        speed = s;
+        speed = speed * s;
     }
 
     public void ResetSpeed()

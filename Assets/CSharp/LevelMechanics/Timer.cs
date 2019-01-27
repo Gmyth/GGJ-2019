@@ -6,9 +6,9 @@ public class Timer : MonoBehaviour {
 
     public float ElapsedTime = 0f;
     [SerializeField] private float GameLength = 120f;
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
         ElapsedTime += Time.deltaTime;
         if(Mathf.Round(ElapsedTime) == GameLength)
         {
