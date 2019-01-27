@@ -19,8 +19,25 @@ public class Pillow : MonoBehaviour
 
     private Vector3 launchPoint;
 
+    private SpawnData spawnData;
+
+    public void ResetAll()
+    {
+        currentState = PillowState.Idle;
+        holder = null;
+        isInWind = false;
+
+        transform.localPosition = spawnData.position;
+        transform.rotation = spawnData.rotation;
+    }
+
+    public void Initialize(SpawnData spawnData)
+    {
+        this.spawnData = spawnData;
+    }
+
     // Use this for initialization
-    void Start ()
+    private void Start ()
     {
 	    currentState = PillowState.Idle;
         isInWind = false;
@@ -39,10 +56,10 @@ public class Pillow : MonoBehaviour
 	        currentState = PillowState.Idle;
 	    }
 
-	    if (currentState == PillowState.Aimed)
-	    {
+	    //if (currentState == PillowState.Aimed)
+	    //{
             //GetComponent<Rigidbody>().position = holder.transform.position + holder.transform.forward + new Vector3(0, 2, 0);
-	    }
+	    //}
 	}
 
     public void ReadyToGo()
@@ -82,7 +99,6 @@ public class Pillow : MonoBehaviour
         {
             StartCoroutine("FlyInTheWind");
         }
-
     }
 
     private IEnumerator FlyInTheWind()
@@ -138,7 +154,6 @@ public class Pillow : MonoBehaviour
                     Vector3 forward = transform.forward;
                     Vector3 orientation = (other.transform.position - transform.position).normalized;
 
-                    float d = Vector3.Distance(other.transform.position, launchPoint);
                     if (Vector3.Dot(forward, orientation) < 0.7f)
                     {
                         other.GetComponent<Player>().Hurt(false);
