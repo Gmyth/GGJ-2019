@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// The state of the game
@@ -17,7 +18,7 @@ public enum GameState : int
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    PlayerInfo[] playerInfos;
+    List<PlayerInfo> playerInfos;
     Player[] players;
 
     /// <summary>
@@ -93,11 +94,7 @@ public class GameManager : MonoBehaviour
 
                     case GameState.MatchSetup:
                         {
-                            int numPlayers = Input.GetJoystickNames().Length;
-                        
-                            playerInfos = new PlayerInfo[numPlayers];
-                            for (int id = 0; id < numPlayers; id++)
-                                playerInfos[id] = new PlayerInfo(id, "Player " + (id + 1));
+                            playerInfos = new List<PlayerInfo>();
 
                             UIManager.Singleton.Open("MatchSetup", UIManager.UIMode.Default, playerInfos);
                         }
@@ -105,7 +102,7 @@ public class GameManager : MonoBehaviour
 
                     case GameState.Match:
                         {
-                            int numPlayers = playerInfos.Length;
+                            int numPlayers = playerInfos.Count;
                         
                             players = new Player[numPlayers];
                             Player player;

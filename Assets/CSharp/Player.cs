@@ -25,17 +25,37 @@ public class PlayerInfo
         }
     }
 
+    private bool isReady;
+    public bool IsReady
+    {
+        get
+        {
+            return isReady;
+        }
+
+        set
+        {
+            if (value != isReady)
+            {
+                isReady = value;
+                OnReadinessChange.Invoke(isReady);
+            }
+        }
+    }
+
     public EventOnDataChange<string> OnNameChange { get; private set; }
+    public EventOnDataChange<bool> OnReadinessChange { get; private set; }
 
     private PlayerInfo() {}
 
-    public PlayerInfo(int id, string name)
+    public PlayerInfo(int id, string name, string controllerId)
     {
         this.id = id;
-        controllerId = "_J" + (id + 1);
+        this.controllerId = controllerId;
         this.name = name;
 
         OnNameChange = new EventOnDataChange<string>();
+        OnReadinessChange = new EventOnDataChange<bool>();
     }
 }
 
@@ -52,7 +72,6 @@ public class Player : MonoBehaviour
     /// The name of the player, which is set at the beginning of the game
     /// </summary>
     public string Name { get; private set; }
-
 
     private int score = 0;
     /// <summary>

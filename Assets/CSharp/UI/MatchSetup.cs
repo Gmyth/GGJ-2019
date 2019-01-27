@@ -1,83 +1,158 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MatchSetup : UIWindow
 {
-    [SerializeField] private Transform list;
-    private PlayerInfoWidget[] playerWidgets;
+    [SerializeField] private Transform playerInfoList;
+    [SerializeField] private Transform tooltipList;
+    [SerializeField] private Text countdown;
 
-    private PlayerInfo[] playerInfos;
+    private PlayerInfoWidget[] playerInfoWidgets;
+    private GameObject[] newPlayers;
+
+    private List<PlayerInfo> playerInfos;
     private int numPlayers;
-    private HashSet<int> isPlayerReady = new HashSet<int>();
+    private int maxNumPlayers;
+    private HashSet<int> preparedPlayers = new HashSet<int>();
+
+    private HashSet<string> controllerIds = new HashSet<string>();
 
     public override void OnOpen(params object[] args)
     {
-        int numListItems = list.childCount;
+        int numListItems = playerInfoList.childCount;
 
-        playerWidgets = new PlayerInfoWidget[numListItems];
+        playerInfoWidgets = new PlayerInfoWidget[numListItems];
         for (int i = 0; i < numListItems; i++)
-            playerWidgets[i] = list.GetChild(i).GetComponent<PlayerInfoWidget>();
+            playerInfoWidgets[i] = playerInfoList.GetChild(i).GetComponent<PlayerInfoWidget>();
 
-        playerInfos = (PlayerInfo[])args;
-        numPlayers = playerInfos.Length;
+        newPlayers = new GameObject[numListItems];
+        for (int i = 0; i < numListItems; i++)
+            newPlayers[i] = tooltipList.GetChild(i).gameObject;
 
-        int id = 0;
-        while (id < numPlayers)
+        playerInfos = (List<PlayerInfo>)args[0];
+        numPlayers = 0;
+
+        string[] avaliableJoysticks = Input.GetJoystickNames();
+        maxNumPlayers = Mathf.Min(4, avaliableJoysticks.Length + 2);
+
+        controllerIds.Add("_K1");
+        controllerIds.Add("_K2");
+        for (int id = 0; id < avaliableJoysticks.Length; id++)
         {
-            ShowPlayerWidget(id);
-            UpdatePlayerWidget(id++);
+            controllerIds.Add("_J" + (id + 1));
         }
 
-        while (id < 4)
-            HidePlayerWidget(id++);
+        foreach (string controllerId in controllerIds)
+        {
+            isSubmitButtonUp.Add(controllerId, true);
+            isStartButtonUp.Add(controllerId, true);
+        }
 
-        isSubmitButtonUp = new bool[numPlayers];
+        for (int id = 0; id < numListItems; id++)
+        {
+            HidePlayerWidget(id);
+            UpdateNewPlayerWidget(id);
+        }
+
+        countdown.text = "";
     }
 
     private void ShowPlayerWidget(int id)
     {
-        playerWidgets[id].Show();
+        playerInfoWidgets[id].Show();
     }
 
     private void HidePlayerWidget(int id)
     {
-        playerWidgets[id].Hide();
+        playerInfoWidgets[id].Hide();
     }
 
-    
+    private void UpdateNewPlayerWidget(int id)
+    {
+        newPlayers[id].SetActive(numPlayers < maxNumPlayers && id == numPlayers);
+    }
+
     private void UpdatePlayerWidget(int id)
     {
     }
 
     private void TogglePlayerReadiness(int id)
     {
-        playerWidgets[id].ToggleReadiness();
-
-        if (isPlayerReady.Contains(id))
+        if (preparedPlayers.Contains(id))
         {
-            isPlayerReady.Remove(id);
+            preparedPlayers.Remove(id);
+            playerInfos[id].IsReady = false;
         }
         else
         {
-            isPlayerReady.Add(id);
+            preparedPlayers.Add(id);
+            playerInfos[id].IsReady = true;
 
-            if (isPlayerReady.Count == numPlayers)
-                GameManager.Singleton.StartNewMatch();
+            if (numPlayers > 1 && preparedPlayers.Count == numPlayers)
+                countdownStartTime = TimeUtility.localTimeInMilisecond;
         }
     }
 
-    bool[] isSubmitButtonUp;
+    private Dictionary<string, bool> isSubmitButtonUp = new Dictionary<string, bool>(6);
+    private Dictionary<string, bool> isStartButtonUp = new Dictionary<string, bool>(6);
 
+    private long countdownStartTime = 0;
     private void Update()
     {
-        for (int i = 0; i < numPlayers; i++)
+        if (!(numPlayers > 1 && preparedPlayers.Count == numPlayers) && countdownStartTime != 0)
         {
-            if (Input.GetAxis("Submit" + playerInfos[i].controllerId) == 0)
-                isSubmitButtonUp[i] = true;
-            else if (isSubmitButtonUp[i])
+            countdownStartTime = 0;
+            countdown.text = "";
+        }
+
+        if (countdownStartTime > 0)
+        {
+            long duration = TimeUtility.localTimeInMilisecond - countdownStartTime;
+            countdown.text = Mathf.RoundToInt(5 - duration / 1000f).ToString();
+
+            if (duration > 5000)
             {
-                isSubmitButtonUp[i] = false;
-                TogglePlayerReadiness(i);
+                GameManager.Singleton.StartNewMatch();
+                return;
+            }
+        }
+
+        if (numPlayers < maxNumPlayers)
+        {
+            foreach (string controllerId in controllerIds)
+            {
+                if (Input.GetAxis("Start" + controllerId) == 0)
+                    isStartButtonUp[controllerId] = true;
+                else if (isStartButtonUp[controllerId])
+                {
+#if UNITY_EDITOR
+                    Debug.Log(LogUtility.MakeLogString("MatchSetup", "A new player has jointed the game. (" + controllerId + ")"));
+#endif
+                    isStartButtonUp[controllerId] = false;
+                    PlayerInfo playerInfo = new PlayerInfo(numPlayers, "Player " + numPlayers, controllerId);
+                    playerInfos.Add(playerInfo);
+
+                    playerInfoWidgets[numPlayers].Initialize(playerInfo);
+                    ShowPlayerWidget(numPlayers);
+
+                    UpdateNewPlayerWidget(numPlayers++);
+                    UpdateNewPlayerWidget(numPlayers);
+
+                    controllerIds.Remove(controllerId);
+                    break;
+                }
+            }
+        }
+        
+        foreach (PlayerInfo playerInfo in playerInfos)
+        {
+            if (Input.GetAxis("Submit" + playerInfo.controllerId) == 0)
+                isSubmitButtonUp[playerInfo.controllerId] = true;
+            else if (isSubmitButtonUp[playerInfo.controllerId])
+            {
+                isSubmitButtonUp[playerInfo.controllerId] = false;
+                TogglePlayerReadiness(playerInfo.id);
             }
         }
     }
