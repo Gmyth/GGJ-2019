@@ -16,12 +16,12 @@ public class Bed : MonoBehaviour {
 		
 	}
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player")
         {
-            //Bounce the player
-
+            Vector3 pushDirection = new Vector3((other.transform.position.x - transform.position.x), 0, (other.transform.position.z - transform.position.z));
+            other.gameObject.GetComponent<Player>().PushAway(pushDirection.normalized, bounceForce);
         }
     }
 

@@ -8,6 +8,8 @@ TagManager:
   - Boarder
   - Bouncer
   - Punch
+  - RoutePoint
+  - PlayerCollider
   layers:
   - Default
   - TransparentFX

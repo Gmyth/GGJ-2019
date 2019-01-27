@@ -58,18 +58,39 @@ public class Yak : MonoBehaviour {
             StopMigrate();
         }
 
+        if (collision.gameObject.tag == "PlayerCollider")
+        {
+            Vector3 pushDirection = new Vector3((collision.transform.parent.position.x - transform.position.x), 0, (collision.transform.parent.position.z - transform.position.z));
+            collision.transform.parent.GetComponent<Rigidbody>().isKinematic = false;
+            collision.transform.parent.GetComponent<Rigidbody>().AddForce(-pushDirection.normalized * bounceForce);
+            //collision.transform.parent.GetComponent<Rigidbody>().isKinematic = true;
+            Debug.Log("Push: " + pushDirection.normalized);
+        }
+
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
             //Bounce back the player
-            other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
-            other.gameObject.GetComponent<Rigidbody>().AddForce(-other.transform.right * bounceForce);
-            Debug.Log(-other.transform.right * bounceForce);
-        }
+            //other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
 
+            //StartCoroutine("Countdown", other.gameObject.GetComponent<Player>());
+
+            //Vector3 pushDirection = new Vector3((other.transform.position.x - transform.position.x), 0, (other.transform.position.z - transform.position.z));
+            
+            //other.gameObject.GetComponent<Rigidbody>().AddForce(pushDirection.normalized * bounceForce);
+            //other.gameObject.GetComponent<Rigidbody>().velocity = pushDirection.normalized * bounceForce;
+            //other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            //Debug.Log(pushDirection.normalized);
+
+            //other.gameObject.GetComponent<Player>().PushAway(pushDirection.normalized, bounceForce);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
         if (other.gameObject.tag == "RoutePoint")
         {         
             if (currentRouteIndex < me.MigratePoints.Length - 1) {
@@ -82,6 +103,12 @@ public class Yak : MonoBehaviour {
             }
         }
 
+    }
+
+    private IEnumerator Countdown(Player p)
+    {
+        yield return new WaitForSeconds(0.1f);
+        p.GetComponent<Rigidbody>().isKinematic = true;
     }
 
     private void OnDestroy()

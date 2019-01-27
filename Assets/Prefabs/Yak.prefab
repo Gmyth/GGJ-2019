@@ -46,7 +46,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1457206879638172
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,8 +245,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 1.2, z: 2}
-  m_Center: {x: 0, y: 0.8, z: 0}
+  m_Size: {x: 1.8668327, y: 3, z: 2.228284}
+  m_Center: {x: 0.009511948, y: 0.79999995, z: 0.00000047683716}
 --- !u!95 &95092672133242532
 Animator:
   serializedVersion: 3
@@ -277,7 +277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   migrateSpeed: 5
-  bounceForce: 1500
+  bounceForce: 20
   currentRouteIndex: 0
 --- !u!198 &198596990710340712
 ParticleSystem:

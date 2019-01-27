@@ -177,6 +177,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         defaultSpeed = speed;
+        isPushed = false;
     }
 
     void FixedUpdate()
@@ -397,4 +398,48 @@ public class Player : MonoBehaviour
     {
         speed = defaultSpeed;
     }
+
+    public void PushAway(Vector3 direction, float forceFactor)
+    {
+        //controller.Move(direction * speed * forceFactor * Time.fixedDeltaTime);
+
+        if (!isPushed)
+        {
+            isPushed = true;
+            this.direction = direction * forceFactor;
+            StartCoroutine("Pushing", this.direction);
+        }
+        //transform.Translate(direction * forceFactor);
+    }
+
+    private float tempSpeed;
+    private bool isPushed;
+    private Vector3 direction;
+    private IEnumerator Pushing()
+    {
+        tempSpeed = speed;
+        speed = 0;
+        float t = 0.5f;
+        while (t > 0)
+        {
+            transform.Translate(direction * Time.deltaTime);
+            t -= Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        speed = tempSpeed;
+        isPushed = false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (isPushed)
+        {
+            StopCoroutine("Pushing");
+            speed = tempSpeed;
+            isPushed = false;
+            direction = Vector3.zero;
+            Debug.Log("Collide " + collision.gameObject.name);
+        }
+    }
+
 }
