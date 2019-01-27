@@ -68,6 +68,7 @@ public class Yak : MonoBehaviour {
         if (other.gameObject.tag == "Player")
         {
             //Bounce back the player
+            other.gameObject.GetComponent<Rigidbody>().isKinematic = false;
             other.gameObject.GetComponent<Rigidbody>().AddForce(-other.transform.right * bounceForce);
             Debug.Log(-other.transform.right * bounceForce);
         }
