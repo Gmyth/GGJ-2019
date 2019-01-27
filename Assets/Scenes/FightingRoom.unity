@@ -4551,6 +4551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventName: Migrate
   duration: 10
+  MigratePoints: []
   spawnPoint: {fileID: 508901456}
   yakPrefab: {fileID: 1203489412465320, guid: 9caed003361cd254993bf6d7c9d44ddf, type: 2}
   createTimePeriod: 0.35

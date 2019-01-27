@@ -8,14 +8,25 @@ public class Yak : MonoBehaviour {
     [SerializeField] private float bounceForce;
 
     private Vector3 migrateDirection;
+    [SerializeField] private int currentRouteIndex;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    private MigrateEvent me;
+
+    private void Awake()
+    {
+        me = GameObject.Find("LevelEventManager").GetComponent<MigrateEvent>();
+    }
+
+    // Use this for initialization
+    void Start()
+    {
+        currentRouteIndex = 1;
+        transform.LookAt(me.MigratePoints[currentRouteIndex].position);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         if (gameObject.activeSelf)
         {
             transform.Translate(migrateDirection * migrateSpeed * Time.deltaTime, Space.World);
@@ -24,7 +35,7 @@ public class Yak : MonoBehaviour {
 
     public void StartMigrate(Vector3 direction)
     {
-        
+
     }
 
     public void StopMigrate()
@@ -42,7 +53,7 @@ public class Yak : MonoBehaviour {
         if (collision.gameObject.tag == "Pillow")
         {
             //Stop or bounce back the pillow
-            
+
         }
 
         if (collision.gameObject.tag == "Boarder")
@@ -60,6 +71,16 @@ public class Yak : MonoBehaviour {
             other.gameObject.GetComponent<Rigidbody>().AddForce(-other.transform.right * bounceForce);
             Debug.Log(-other.transform.right * bounceForce);
         }
+
+        if (other.gameObject.tag == "RoutePoint")
+        {
+            currentRouteIndex++;
+            if (currentRouteIndex < me.MigratePoints.Length) {
+                migrateDirection = (me.MigratePoints[currentRouteIndex].position - transform.position).normalized;
+                transform.LookAt(me.MigratePoints[currentRouteIndex].position);
+            }
+        }
+
     }
 
     private void OnDestroy()
