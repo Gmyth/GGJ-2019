@@ -54,7 +54,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4529745837023438}
   m_Layer: 0
-  m_Name: Slot
+  m_Name: SlotRA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135,8 +135,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4546857774416104}
+  - component: {fileID: 135090889143192586}
   m_Layer: 0
-  m_Name: Slot
+  m_Name: SlotLA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -739,8 +740,20 @@ MonoBehaviour:
   model: {fileID: 1822924123137546}
   buttom: {fileID: 95655743277489978}
   top: {fileID: 95789570972057382}
-  SlotLA: {fileID: 4529745837023438}
-  SlotRA: {fileID: 4546857774416104}
+  SlotLA: {fileID: 4546857774416104}
+  SlotRA: {fileID: 4529745837023438}
+--- !u!135 &135090889143192586
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1699385967839184}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.015
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &136351194483481304
 CapsuleCollider:
   m_ObjectHideFlags: 1

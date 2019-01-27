@@ -204,13 +204,7 @@ public class Player : MonoBehaviour
                 Pillow pillow = Ammo.Dequeue();
                 pillow.Throw(model.transform.forward, model.transform.up, (emPower - 0.08f + 1) * powerThrowForward, (emPower + 1) * powerThrowUpper);
                 pillow.transform.parent = transform.parent;
-                if (Ammo.Count > 0)
-                {
-                    Pillow pillowTemp = Ammo.Peek();
-                    pillowTemp.transform.parent = SlotRA;
-                    pillowTemp.transform.localPosition = Vector3.zero;
-                    pillowTemp.transform.localRotation = Quaternion.identity;
-                }
+
                 top.SetInteger("CurrentState", 3);
                 StartCoroutine(ThrowFinish());
                 emPower = 0;
@@ -225,7 +219,16 @@ public class Player : MonoBehaviour
 
             if (NumPillowsHeld > 0)
             {
-                Ammo.Peek().ReadyToGo();
+                Pillow pillow = Ammo.Peek();
+                pillow.ReadyToGo();
+
+                if (numPillowHold == 1)
+                {
+                    pillow.transform.parent = SlotRA;
+                    pillow.transform.localPosition = Vector3.zero;
+                    pillow.transform.localRotation = Quaternion.identity;
+                }
+
                 emPower = minThrowPower;
                 top.SetInteger("CurrentState", 1);
             }
@@ -244,12 +247,18 @@ public class Player : MonoBehaviour
             {
                 moveDirection = Quaternion.Euler(0, 45, 0) * transform.TransformDirection(moveDirection);
                 moveDirection = moveDirection.normalized;
+
+                top.SetFloat("Speed", speed);
+                buttom.SetFloat("Speed", speed);
+                model.transform.forward = moveDirection;
             }
             else
+            {
                 moveDirection = Vector3.zero;
 
-            if (moveDirection != Vector3.zero) //This condition prevents from spamming "Look rotation viewing vector is zero" when not moving.
-                model.transform.forward = moveDirection;
+                top.SetFloat("Speed", 0);
+                buttom.SetFloat("Speed", 0);
+            }   
 
             //if (Input.GetButton("Jump"))
             //{
@@ -260,11 +269,6 @@ public class Player : MonoBehaviour
         // Apply gravity
         moveDirection.y = moveDirection.y - (gravity * Time.fixedDeltaTime);
 
-        // Move the controller
-        if (Input.GetAxis("Horizontal") + Input.GetAxis("Vertical") != 0 ) {
-            top.SetFloat("Speed", speed);
-            buttom.SetFloat("Speed", speed);
-        }
         controller.Move(moveDirection * speed * Time.fixedDeltaTime);
     }
 
@@ -284,7 +288,7 @@ public class Player : MonoBehaviour
             top.SetInteger("CurrentState", 2);
             StartCoroutine(PickFinish());
             Pillow pillow = Pillows[0];
-            pillow.transform.parent = NumPillowsHeld++ == 0 ? SlotRA : SlotLA;
+            pillow.transform.parent = NumPillowsHeld++ == 0 ? SlotLA : SlotRA;
             pillow.transform.localPosition = Vector3.zero;
             pillow.transform.localRotation = Quaternion.identity;
 
@@ -313,7 +317,6 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(1f);
         SlotRA.GetComponent<SphereCollider>().enabled = false;
         top.SetInteger("CurrentState", 0);
-        
     }
 
     IEnumerator ThrowFinish()
