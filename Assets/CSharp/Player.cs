@@ -148,15 +148,26 @@ public class Player : MonoBehaviour
     private Vector3 moveDirection = Vector3.zero;
     private CharacterController controller;
 
+    public Transform SpawnData { get; private set; }
+
     public EventOnDataChange<int> OnScoreChange { get; private set; }
     public EventOnDataChange<int> OnNumPillowsHeldChange { get; private set; }
 
-    public void Initialize(PlayerInfo playerInfo)
+
+    public void Initialize(PlayerInfo playerInfo, Transform spawnData)
     {
         Id = playerInfo.id;
         ControllerId = playerInfo.controllerId;
         Name = playerInfo.Name;
         Score = 0;
+        SpawnData = spawnData;
+    }
+
+    public void ResetAll()
+    {
+        Score = 0;
+        transform.localPosition = SpawnData.position;
+        transform.localRotation = SpawnData.rotation;
     }
 
     private bool isSubmitButtonUp = true;
@@ -380,7 +391,6 @@ public class Player : MonoBehaviour
     public void SetSpeed(float s)
     {
         speed = speed * s;
-        Debug.Log("Speed is now " + speed);
     }
 
     public void ResetSpeed()

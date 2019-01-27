@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -10,6 +11,7 @@ public enum GameState : int
     MainMenu,
     MatchSetup,
     Match,
+    MatchResult,
     End,
 }
 
@@ -18,8 +20,29 @@ public enum GameState : int
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    List<PlayerInfo> playerInfos;
-    Player[] players;
+    private List<PlayerInfo> playerInfos;
+    private LevelData levelData;
+    private Player[] players;
+    private List<Pillow> pillows;
+    private SortedList<int, PlayerRecord> lastMatchResult;
+
+    private float matchTimeLeft;
+    public float MatchTimeLeft
+    {
+        get
+        {
+            return matchTimeLeft;
+        }
+
+        private set
+        {
+            if (value != matchTimeLeft)
+            {
+                matchTimeLeft = value;
+                OnMatchTimeLeftChange.Invoke(matchTimeLeft);
+            }
+        }
+    }
 
     /// <summary>
     /// The unique instance
@@ -29,7 +52,8 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// An event triggered whenever the state of the game changes
     /// </summary>
-    public EventOnDataChange2<GameState> onCurrentGameStateChange = new EventOnDataChange2<GameState>();
+    public EventOnDataChange2<GameState> OnCurrentGameStateChange { get; private set; }
+    public EventOnDataChange<float> OnMatchTimeLeftChange { get; private set; }
 
     private GameState currentGameState;
 
@@ -45,8 +69,6 @@ public class GameManager : MonoBehaviour
 
         private set
         {
-
-
             // Reset current state
             if (value == currentGameState)
             {
@@ -54,9 +76,16 @@ public class GameManager : MonoBehaviour
                 LogUtility.PrintLogFormat("GameManager", "Reset {0}.", value);
 #endif
 
-                //switch (currentGameState)
-                //{
-                //}
+                switch (currentGameState)
+                {
+                    case GameState.Match:
+                        ResetPlayers();
+                        ResetPillows();
+                        MatchTimeLeft = 120;
+                        break;
+                }
+
+                OnCurrentGameStateChange.Invoke(currentGameState, currentGameState);
             }
             else
             {
@@ -69,6 +98,27 @@ public class GameManager : MonoBehaviour
 
                     case GameState.MatchSetup:
                         UIManager.Singleton.Close("MatchSetup");
+                        break;
+
+                    case GameState.Match:
+                        UIManager.Singleton.Close("HUD");
+                        lastMatchResult = new SortedList<int, PlayerRecord>();
+                        Destroy(levelData.gameObject);
+                        foreach (Player player in players)
+                        {
+                            lastMatchResult.Add(player.Score * 10000 + player.Id, new PlayerRecord(player));
+                            Destroy(player.gameObject);
+                        }
+                        foreach (Pillow pillow in pillows)
+                            Destroy(pillow.gameObject);
+                        levelData = null;
+                        players = null;
+                        pillows = null;
+                        MatchTimeLeft = 0;
+                        break;
+
+                    case GameState.MatchResult:
+                        UIManager.Singleton.Close("MatchResult");
                         break;
                 }
 
@@ -84,53 +134,37 @@ public class GameManager : MonoBehaviour
                 //{
                 //}
 
-                onCurrentGameStateChange.Invoke(previousGameState, currentGameState);
+                OnCurrentGameStateChange.Invoke(previousGameState, currentGameState);
 
                 switch (currentGameState)
                 {
                     case GameState.MainMenu:
+                        playerInfos = null;
                         UIManager.Singleton.Open("MainMenu");
                         break;
 
                     case GameState.MatchSetup:
                         {
                             playerInfos = new List<PlayerInfo>();
-
                             UIManager.Singleton.Open("MatchSetup", UIManager.UIMode.Default, playerInfos);
                         }
                         break;
 
                     case GameState.Match:
                         {
-                            int numPlayers = playerInfos.Count;
-
-                            List<SpawnData> spawnDatas = new List<SpawnData>();
-                            spawnDatas.Add(new SpawnData(new Vector3(3, 2, 0), Quaternion.Euler(0, 90, 0)));
-                            spawnDatas.Add(new SpawnData(new Vector3(10, 2, -7), Quaternion.Euler(0, 45, 0)));
-                            spawnDatas.Add(new SpawnData(new Vector3(20, 2, -16), Quaternion.Euler(0, 45, 0)));
-                            spawnDatas.Add(new SpawnData(new Vector3(25, 2, -24), Quaternion.Euler(0, 0, 0)));
-
-                            players = new Player[numPlayers];
-                            Player player;
-                            SpawnData spawnData;
-                            int i;
-                            for (int id = 0; id < numPlayers; id++)
-                            {
-                                Random.InitState(TimeUtility.localTime + id);
-                                
-                                i = Random.Range(0, spawnDatas.Count);
-                                spawnData = spawnDatas[i];
-                                spawnDatas.RemoveAt(i);
-                                Debug.Log(i);
-                                player = Instantiate(ResourceUtility.GetPrefab<Player>("Player" + id), spawnData.position, spawnData.rotation, transform);
-                                player.Initialize(playerInfos[id]);
-                                players[id] = player;
-                            }
-
-                            Instantiate(ResourceUtility.GetPrefab<GameObject>("Level"), transform);
+                            LoadLevel("Level");
+                            SpawnPlayers();
+                            SpawnPillows();
 
                             UIManager.Singleton.Open("HUD", UIManager.UIMode.Permenent, players);
+
+                            MatchTimeLeft = 120;
+                            StartCoroutine(MatchCountdown());
                         }
+                        break;
+
+                    case GameState.MatchResult:
+                        UIManager.Singleton.Open("MatchResult", UIManager.UIMode.Default, lastMatchResult);
                         break;
 
                     case GameState.End:
@@ -153,6 +187,11 @@ public class GameManager : MonoBehaviour
         CurrentGameState = GameState.Match;
     }
 
+    public void QuitMatch()
+    {
+        CurrentGameState = GameState.MainMenu;
+    }
+
     /// <summary>
     /// Quit the game
     /// </summary>
@@ -161,19 +200,110 @@ public class GameManager : MonoBehaviour
         CurrentGameState = GameState.End;
     }
 
+    private void LoadLevel(string name)
+    {
+        levelData = Instantiate(ResourceUtility.GetPrefab<LevelData>(name), transform);
+    }
+
+    private void SpawnPlayers()
+    {
+        int numPlayers = playerInfos.Count;
+
+        List<Transform> spawnDatas = new List<Transform>();
+
+        for (int i = 0; i < levelData.PlayerSpawnDatas.childCount; i++)
+            spawnDatas.Add(levelData.PlayerSpawnDatas.GetChild(i));
+
+        players = new Player[numPlayers];
+        Player player;
+        Transform spawnData;
+        int r;
+        for (int id = 0; id < numPlayers; id++)
+        {
+            Random.InitState(TimeUtility.localTime + id);
+
+            r = Random.Range(0, spawnDatas.Count);
+            spawnData = spawnDatas[r];
+            spawnDatas.RemoveAt(r);
+
+            player = Instantiate(ResourceUtility.GetPrefab<Player>("Player" + id), spawnData.position, spawnData.rotation, transform);
+            player.Initialize(playerInfos[id], spawnData);
+            players[id] = player;
+        }
+    }
+
+    private void ResetPlayers()
+    {
+        for (int id = 0; id < players.Length; id++)
+            players[id].ResetAll();
+    }
+
+    private void SpawnPillows()
+    {
+        pillows = new List<Pillow>();
+
+        Transform spawnDatas = levelData.PillowSpawnDatas.GetChild(0);
+        Transform spawnData;
+        Pillow pillow;
+
+        for (int i = 0; i < spawnDatas.childCount; i++)
+        {
+            spawnData = spawnDatas.GetChild(i);
+            pillow = Instantiate(ResourceUtility.GetPrefab<Pillow>("Pillow"), spawnData.position, spawnData.rotation, transform);
+            pillow.spawnData = spawnData;
+            pillows.Add(pillow);
+        }
+
+        spawnDatas = levelData.PillowSpawnDatas.GetChild(1);
+        
+        for (int i = 0; i < spawnDatas.childCount; i++)
+        {
+            Random.InitState(TimeUtility.localTime + i + 4);
+            if (Random.Range(0, 100) < 50)
+            {
+                spawnData = spawnDatas.GetChild(i);
+                pillow = Instantiate(ResourceUtility.GetPrefab<Pillow>("Pillow"), spawnData.position, spawnData.rotation, transform);
+                pillow.spawnData = spawnData;
+                pillows.Add(pillow);
+            }
+        }
+    }
+
+    private void ResetPillows()
+    {
+        foreach (Pillow pillow in pillows)
+            pillow.ResetAll();
+    }
+
+    private IEnumerator MatchCountdown()
+    {
+        while (MatchTimeLeft > 0)
+        {
+            MatchTimeLeft -= Time.deltaTime;
+            yield return null;
+        }
+
+        MatchTimeLeft = 0;
+
+        if (CurrentGameState == GameState.Match)
+            CurrentGameState = GameState.MatchResult;
+
+        yield break;
+    }
+
     private void Awake()
     {
         if (!Singleton)
-        {
             Singleton = this;
-            DontDestroyOnLoad(gameObject);
-        }
         else if (this != Singleton)
             Destroy(gameObject);
    }
 
     private void Start()
     {
+        OnCurrentGameStateChange = new EventOnDataChange2<GameState>();
+        OnMatchTimeLeftChange = new EventOnDataChange<float>();
+
         CurrentGameState = GameState.MainMenu;
     }
 }

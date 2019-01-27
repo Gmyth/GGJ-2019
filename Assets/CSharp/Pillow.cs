@@ -19,8 +19,25 @@ public class Pillow : MonoBehaviour
 
     private Vector3 launchPoint;
 
+    public Transform spawnData;
+
+    public void ResetAll()
+    {
+        currentState = PillowState.Idle;
+        holder = null;
+        isInWind = false;
+
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        rigidbody.isKinematic = true;
+        rigidbody.useGravity = true;
+
+        transform.parent = GameManager.Singleton.transform;
+        transform.localPosition = spawnData.position;
+        transform.rotation = spawnData.rotation;
+    }
+
     // Use this for initialization
-    void Start ()
+    private void Start ()
     {
 	    currentState = PillowState.Idle;
         isInWind = false;
@@ -39,10 +56,10 @@ public class Pillow : MonoBehaviour
 	        currentState = PillowState.Idle;
 	    }
 
-	    if (currentState == PillowState.Aimed)
-	    {
+	    //if (currentState == PillowState.Aimed)
+	    //{
             //GetComponent<Rigidbody>().position = holder.transform.position + holder.transform.forward + new Vector3(0, 2, 0);
-	    }
+	    //}
 	}
 
     public void ReadyToGo()
@@ -82,7 +99,6 @@ public class Pillow : MonoBehaviour
         {
             StartCoroutine("FlyInTheWind");
         }
-
     }
 
     private IEnumerator FlyInTheWind()
@@ -118,12 +134,12 @@ public class Pillow : MonoBehaviour
                     if (Vector3.Dot(forward, orientation) < 0.7f)
                     {
                         player.Hurt(false);
-                        player.Score += Mathf.FloorToInt(CalculateDamage(d));
+                        holder.Score += Mathf.FloorToInt(CalculateDamage(d));
                     }
                     else
                     {
                         player.Hurt(true);
-                        player.Score += Mathf.FloorToInt(1.2f * CalculateDamage(d));
+                        holder.Score += Mathf.FloorToInt(1.2f * CalculateDamage(d));
                     }
                     AudioManager.Instance.PlaySoundEffect("PillowNearFight", false);
                     currentState = PillowState.Idle;
@@ -138,16 +154,15 @@ public class Pillow : MonoBehaviour
                     Vector3 forward = transform.forward;
                     Vector3 orientation = (other.transform.position - transform.position).normalized;
 
-                    float d = Vector3.Distance(other.transform.position, launchPoint);
                     if (Vector3.Dot(forward, orientation) < 0.7f)
                     {
                         other.GetComponent<Player>().Hurt(false);
-                        player.Score += 1;
+                        holder.Score += 1;
                     }
                     else
                     {
                         other.GetComponent<Player>().Hurt(true);
-                        player.Score += 2;
+                        holder.Score += 2;
                     }
 
                     currentState = PillowState.Idle;

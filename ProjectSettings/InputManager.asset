@@ -15,7 +15,7 @@ InputManager:
     altPositiveButton: d
     gravity: 3
     dead: 0.001
-    sensitivity: 3
+    sensitivity: 1000
     snap: 1
     invert: 0
     type: 0
@@ -32,7 +32,7 @@ InputManager:
     gravity: 3
     dead: 0.001
     sensitivity: 3
-    snap: 0
+    snap: 1
     invert: 0
     type: 2
     axis: 0
@@ -68,7 +68,7 @@ InputManager:
     invert: 0
     type: 2
     axis: 0
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: Horizontal_J3
     descriptiveName: 
@@ -143,8 +143,8 @@ InputManager:
     altPositiveButton: w
     gravity: 3
     dead: 0.001
-    sensitivity: 3
-    snap: 0
+    sensitivity: 1000
+    snap: 1
     invert: 0
     type: 0
     axis: 27
@@ -160,7 +160,7 @@ InputManager:
     gravity: 3
     dead: 0.001
     sensitivity: 3
-    snap: 0
+    snap: 1
     invert: 1
     type: 2
     axis: 1
@@ -196,7 +196,7 @@ InputManager:
     invert: 1
     type: 2
     axis: 1
-    joyNum: 1
+    joyNum: 2
   - serializedVersion: 3
     m_Name: Vertical_J3
     descriptiveName: 
