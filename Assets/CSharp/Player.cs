@@ -314,13 +314,25 @@ public class Player : MonoBehaviour
             StartCoroutine(PickFinish());
 
             Pillow pillow = Pillows[0];
-            pillow.transform.parent = NumPillowsHeld++ == 0 ? SlotLA : SlotRA;
-            pillow.transform.localPosition = Vector3.zero;
-            pillow.transform.localRotation = Quaternion.identity;
-
-            pillow.Pick(this);
-            AudioManager.Instance.PlaySoundEffect("PillowNearFight1", false);
-            Ammo.Enqueue(pillow);
+            if (Ammo.Contains(Pillows[0])) {
+                // no valid to add, find others
+                pillow = null;
+                if (Pillows.Count >= 2) {
+                    for (int i = 0; i < Pillows.Count; i++) {
+                        if (!Ammo.Contains(Pillows[i])){
+                            pillow = Pillows[i];
+                        }
+                    }
+                }
+            }
+            if (pillow) {
+                pillow.transform.parent = NumPillowsHeld++ == 0 ? SlotLA : SlotRA;
+                pillow.transform.localPosition = Vector3.zero;
+                pillow.transform.localRotation = Quaternion.identity;
+                pillow.Pick(this);
+                AudioManager.Instance.PlaySoundEffect("PillowNearFight1", false);
+                Ammo.Enqueue(pillow);
+            }
         }
     }
     public void Hurt(bool facing)
