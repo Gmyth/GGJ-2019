@@ -84,7 +84,7 @@ public class Player : MonoBehaviour
             return score;
         }
 
-        private set
+        set
         {
             if (value != score)
             {
@@ -157,13 +157,11 @@ public class Player : MonoBehaviour
         ControllerId = playerInfo.controllerId;
         Name = playerInfo.Name;
         Score = 0;
-
-        // let the gameObject fall down
-        gameObject.transform.position = new Vector3(0, 5, 0);
     }
 
     private bool isSubmitButtonUp = true;
     private bool isCancelButtonUp = true;
+    private bool isAttackButtonUp = true;
 
     private void Start()
     {
@@ -184,26 +182,34 @@ public class Player : MonoBehaviour
             else
                 PickUp();
         }
+
         //Attack
-        if (Input.GetAxis("Attack" + ControllerId) > 0) {
+        if (Input.GetAxis("Attack" + ControllerId) == 0)
+            isAttackButtonUp = true;
+        else if (isAttackButtonUp)
+        {
+            isAttackButtonUp = false;
+
             top.SetInteger("CurrentState", 4);
             StartCoroutine(AttackFinish());
+
             if (numPillowHold == 0)
             {
                 // that is a punch
                 SlotLA.GetComponent<SphereCollider>().enabled = true;
             }
-            else {
+            else
+            {
                 // a Pillow Sweep
                 if(numPillowHold == 1)
                 {
+                    AudioManager.Instance.PlaySoundEffect("PillowNearFight", false);
                     var temp = Ammo.Peek();
                     temp.Attack();
                 }
             }
         }
             
-
         // Tossing pillows
         if (Input.GetAxis("Toss" + ControllerId) == 0)
         {
@@ -212,7 +218,7 @@ public class Player : MonoBehaviour
                 Pillow pillow = Ammo.Dequeue();
                 pillow.Throw(model.transform.forward, model.transform.up, (emPower - 0.08f + 1) * powerThrowForward, (emPower + 1) * powerThrowUpper);
                 pillow.transform.parent = transform.parent;
-
+                AudioManager.Instance.PlaySoundEffect("PillowThrow", false);
                 top.SetInteger("CurrentState", 3);
                 StartCoroutine(ThrowFinish());
                 emPower = 0;
@@ -250,10 +256,10 @@ public class Player : MonoBehaviour
             // We are grounded, so recalculate
             // move direction directly from axes
 
-            moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
+            moveDirection = new Vector3(Input.GetAxis("Horizontal" + ControllerId), 0.0f, Input.GetAxis("Vertical" + ControllerId));
             if (moveDirection.sqrMagnitude > 0.2f)
             {
-                moveDirection = Quaternion.Euler(0, 45, 0) * transform.TransformDirection(moveDirection);
+                //moveDirection = Quaternion.Euler(0, -45, 0) * transform.TransformDirection(moveDirection);
                 moveDirection = moveDirection.normalized;
 
                 top.SetFloat("Speed", speed);
@@ -287,28 +293,32 @@ public class Player : MonoBehaviour
 
     public void PickUp()
     {
-#if UNITY_EDITOR
-        Debug.Log(LogUtility.MakeLogString("Player", name + " picked up a pillow."));
-#endif
-
         if (Pillows.Count > 0)
         {
+#if UNITY_EDITOR
+            Debug.Log(LogUtility.MakeLogString("Player", name + " picked up a pillow."));
+#endif
+
             top.SetInteger("CurrentState", 2);
             StartCoroutine(PickFinish());
+
             Pillow pillow = Pillows[0];
             pillow.transform.parent = NumPillowsHeld++ == 0 ? SlotLA : SlotRA;
             pillow.transform.localPosition = Vector3.zero;
             pillow.transform.localRotation = Quaternion.identity;
 
-            pillow.Pick(gameObject);
+            pillow.Pick(this);
+            AudioManager.Instance.PlaySoundEffect("PillowNearFight1", false);
             Ammo.Enqueue(pillow);
         }
     }
-    public void Hurt(bool facing) {
+    public void Hurt(bool facing)
+    {
         top.SetBool("Hurt", true);
         top.SetBool("HurtFromBack", !facing);
         StartCoroutine(Hurt());
     }
+
     IEnumerator Hurt()
     {
         yield return new WaitForSeconds(1f);
@@ -339,23 +349,12 @@ public class Player : MonoBehaviour
         {
             Pillow pillow = other.GetComponent<Pillow>();
 
-            switch (pillow.currentState)
-            {
-                case PillowState.Idle:
-                    Pillows.Add(pillow); // Register the pillow
-                    break;
-
-                case PillowState.Throwed:
-                    // doing dmg TODO
-                    break;
-            }
+            if (pillow.currentState == PillowState.Idle)
+                Pillows.Add(pillow); // Register the pillow
         }
 
-        if (other.tag == "Punch")
-        {
-            //get punch by others
-            // TODO deal damage
-        }
+        //if (other.tag == "Punch")
+        //    other.transform.parent.parent.parent.parent.GetComponent<Player>().Score -= 10;
     }
 
     void OnTriggerExit(Collider other)
@@ -372,14 +371,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        Id = 0;
-        ControllerId = "_J1";
-        Name = "Tester";
-
         controller = GetComponent<CharacterController>();
-
-        // let the gameObject fall down
-        gameObject.transform.position = new Vector3(0, 5, 0);
 
         OnScoreChange = new EventOnDataChange<int>();
         OnNumPillowsHeldChange = new EventOnDataChange<int>();
@@ -395,5 +387,4 @@ public class Player : MonoBehaviour
     {
         speed = defaultSpeed;
     }
-
 }

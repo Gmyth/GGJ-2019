@@ -103,15 +103,31 @@ public class GameManager : MonoBehaviour
                     case GameState.Match:
                         {
                             int numPlayers = playerInfos.Count;
-                        
+
+                            List<SpawnData> spawnDatas = new List<SpawnData>();
+                            spawnDatas.Add(new SpawnData(new Vector3(3, 2, 0), Quaternion.Euler(0, 90, 0)));
+                            spawnDatas.Add(new SpawnData(new Vector3(10, 2, -7), Quaternion.Euler(0, 45, 0)));
+                            spawnDatas.Add(new SpawnData(new Vector3(20, 2, -16), Quaternion.Euler(0, 45, 0)));
+                            spawnDatas.Add(new SpawnData(new Vector3(25, 2, -24), Quaternion.Euler(0, 0, 0)));
+
                             players = new Player[numPlayers];
                             Player player;
+                            SpawnData spawnData;
+                            int i;
                             for (int id = 0; id < numPlayers; id++)
                             {
-                                player = Instantiate(ResourceUtility.GetPrefab<Player>("Player"));
+                                Random.InitState(TimeUtility.localTime + id);
+                                
+                                i = Random.Range(0, spawnDatas.Count);
+                                spawnData = spawnDatas[i];
+                                spawnDatas.RemoveAt(i);
+                                Debug.Log(i);
+                                player = Instantiate(ResourceUtility.GetPrefab<Player>("Player" + id), spawnData.position, spawnData.rotation, transform);
                                 player.Initialize(playerInfos[id]);
                                 players[id] = player;
                             }
+
+                            Instantiate(ResourceUtility.GetPrefab<GameObject>("Level"), transform);
 
                             UIManager.Singleton.Open("HUD", UIManager.UIMode.Permenent, players);
                         }
