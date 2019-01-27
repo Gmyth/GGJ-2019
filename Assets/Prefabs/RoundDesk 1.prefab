@@ -36,7 +36,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4886897379527060}
-  - component: {fileID: 65726378974589670}
+  - component: {fileID: 64195261939646866}
   m_Layer: 0
   m_Name: RoundDesk 1
   m_TagString: Untagged
@@ -63,9 +63,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1711924324615700}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5, y: 1, z: -6}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 35.5, y: 1, z: -5.25}
+  m_LocalScale: {x: 0.099999994, y: 0.099999994, z: 0.099999994}
   m_Children:
   - {fileID: 4444834595138252}
   m_Father: {fileID: 0}
@@ -113,8 +113,8 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1179982353089866}
   m_Mesh: {fileID: 4300000, guid: 73dcda7d0578b534bac26e909972fc9a, type: 3}
---- !u!65 &65726378974589670
-BoxCollider:
+--- !u!64 &64195261939646866
+MeshCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -122,6 +122,8 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 32.39608, y: 12.35148, z: 31.464252}
-  m_Center: {x: 0, y: 6.6632247, z: 0.16640663}
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 73dcda7d0578b534bac26e909972fc9a, type: 3}

@@ -788,22 +788,6 @@ Prefab:
       propertyPath: m_Name
       value: RoundDesk
       objectReference: {fileID: 0}
-    - target: {fileID: 4886897379527060, guid: 53a999ca43624154aa25bfa4d81b4dde, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 0.099999994
-      objectReference: {fileID: 0}
-    - target: {fileID: 4886897379527060, guid: 53a999ca43624154aa25bfa4d81b4dde, type: 2}
-      propertyPath: m_LocalScale.y
-      value: 0.099999994
-      objectReference: {fileID: 0}
-    - target: {fileID: 4886897379527060, guid: 53a999ca43624154aa25bfa4d81b4dde, type: 2}
-      propertyPath: m_LocalScale.z
-      value: 0.099999994
-      objectReference: {fileID: 0}
-    - target: {fileID: 4886897379527060, guid: 53a999ca43624154aa25bfa4d81b4dde, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53a999ca43624154aa25bfa4d81b4dde, type: 2}
   m_IsPrefabAsset: 0
@@ -1395,7 +1379,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh85500
+  m_Name: pb_Mesh20688
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -3869,7 +3853,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4029290377365820, guid: ed6faaaaf32acf5459c3cc623ffe0787, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 34.5
+      value: 34.294678
       objectReference: {fileID: 0}
     - target: {fileID: 4029290377365820, guid: ed6faaaaf32acf5459c3cc623ffe0787, type: 2}
       propertyPath: m_LocalPosition.y
@@ -3877,7 +3861,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4029290377365820, guid: ed6faaaaf32acf5459c3cc623ffe0787, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -7.25
+      value: -6.36396
       objectReference: {fileID: 0}
     - target: {fileID: 4029290377365820, guid: ed6faaaaf32acf5459c3cc623ffe0787, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3910,6 +3894,36 @@ Prefab:
     - target: {fileID: 4516094173762728, guid: ed6faaaaf32acf5459c3cc623ffe0787, type: 2}
       propertyPath: m_LocalPosition.z
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 65323229028468608, guid: ed6faaaaf32acf5459c3cc623ffe0787,
+        type: 2}
+      propertyPath: m_Size.y
+      value: 33.663044
+      objectReference: {fileID: 0}
+    - target: {fileID: 65323229028468608, guid: ed6faaaaf32acf5459c3cc623ffe0787,
+        type: 2}
+      propertyPath: m_Center.y
+      value: 16.676092
+      objectReference: {fileID: 0}
+    - target: {fileID: 65323229028468608, guid: ed6faaaaf32acf5459c3cc623ffe0787,
+        type: 2}
+      propertyPath: m_Size.z
+      value: 15.281076
+      objectReference: {fileID: 0}
+    - target: {fileID: 65323229028468608, guid: ed6faaaaf32acf5459c3cc623ffe0787,
+        type: 2}
+      propertyPath: m_Center.z
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 65323229028468608, guid: ed6faaaaf32acf5459c3cc623ffe0787,
+        type: 2}
+      propertyPath: m_Center.x
+      value: -0.049569607
+      objectReference: {fileID: 0}
+    - target: {fileID: 65323229028468608, guid: ed6faaaaf32acf5459c3cc623ffe0787,
+        type: 2}
+      propertyPath: m_Size.x
+      value: 15.457225
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed6faaaaf32acf5459c3cc623ffe0787, type: 2}
@@ -4331,7 +4345,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1486710157}
-  m_LocalRotation: {x: 0, y: -0.38268343, z: 0, w: 0.92387956}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -27.75, y: 0, z: -8.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4350,7 +4364,7 @@ Transform:
   - {fileID: 1890686917}
   m_Father: {fileID: 0}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: -45, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1513596178
 GameObject:
   m_ObjectHideFlags: 0
