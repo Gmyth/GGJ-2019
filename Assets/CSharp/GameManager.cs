@@ -18,9 +18,12 @@ public enum GameState : int
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    List<PlayerInfo> playerInfos;
-    Player[] players;
-    List<Pillow> pillows;
+    private List<PlayerInfo> playerInfos;
+    private LevelData levelData;
+    private Player[] players;
+    private List<Pillow> pillows;
+
+    public long MatchStartTime { get; private set; }
 
     /// <summary>
     /// The unique instance
@@ -46,8 +49,6 @@ public class GameManager : MonoBehaviour
 
         private set
         {
-
-
             // Reset current state
             if (value == currentGameState)
             {
@@ -58,6 +59,9 @@ public class GameManager : MonoBehaviour
                 switch (currentGameState)
                 {
                     case GameState.Match:
+                        ResetPlayers();
+                        ResetPillows();
+                        MatchStartTime = TimeUtility.localTimeInMilisecond;
                         break;
                 }
             }
@@ -75,8 +79,16 @@ public class GameManager : MonoBehaviour
                         break;
 
                     case GameState.Match:
-                        ResetPlayers();
-                        ResetPillows();
+                        UIManager.Singleton.Close("HUD");
+                        Destroy(levelData);
+                        foreach (Player player in players)
+                            Destroy(player);
+                        foreach (Pillow pillow in pillows)
+                            Destroy(pillow);
+                        levelData = null;
+                        players = null;
+                        pillows = null;
+                        MatchStartTime = 0;
                         break;
                 }
 
@@ -110,34 +122,13 @@ public class GameManager : MonoBehaviour
 
                     case GameState.Match:
                         {
-                            int numPlayers = playerInfos.Count;
-
-                            List<SpawnData> spawnDatas = new List<SpawnData>();
-                            spawnDatas.Add(new SpawnData(new Vector3(8, 2, 5), Quaternion.Euler(0, 90, 0)));
-                            spawnDatas.Add(new SpawnData(new Vector3(15, 2, -2), Quaternion.Euler(0, 45, 0)));
-                            spawnDatas.Add(new SpawnData(new Vector3(25, 2, -11), Quaternion.Euler(0, 45, 0)));
-                            spawnDatas.Add(new SpawnData(new Vector3(30, 2, -19), Quaternion.Euler(0, 0, 0)));
-
-                            players = new Player[numPlayers];
-                            Player player;
-                            SpawnData spawnData;
-                            int i;
-                            for (int id = 0; id < numPlayers; id++)
-                            {
-                                Random.InitState(TimeUtility.localTime + id);
-                                
-                                i = Random.Range(0, spawnDatas.Count);
-                                spawnData = spawnDatas[i];
-                                spawnDatas.RemoveAt(i);
-                                Debug.Log(i);
-                                player = Instantiate(ResourceUtility.GetPrefab<Player>("Player" + id), spawnData.position, spawnData.rotation, transform);
-                                player.Initialize(playerInfos[id]);
-                                players[id] = player;
-                            }
-
-                            Instantiate(ResourceUtility.GetPrefab<GameObject>("Level"), transform);
+                            LoadLevel("Level");
+                            SpawnPlayers();
+                            SpawnPillows();
 
                             UIManager.Singleton.Open("HUD", UIManager.UIMode.Permenent, players);
+
+                            MatchStartTime = TimeUtility.localTimeInMilisecond;
                         }
                         break;
 
@@ -161,11 +152,6 @@ public class GameManager : MonoBehaviour
         CurrentGameState = GameState.Match;
     }
 
-    public void RestartMatch()
-    {
-        CurrentGameState = GameState.Match;
-    }
-
     public void QuitMatch()
     {
         CurrentGameState = GameState.MainMenu;
@@ -179,32 +165,31 @@ public class GameManager : MonoBehaviour
         CurrentGameState = GameState.End;
     }
 
-    private void LoadLevel(string level)
+    private void LoadLevel(string name)
     {
-        Instantiate(ResourceUtility.GetPrefab<GameObject>(level), transform);
+        levelData = Instantiate(ResourceUtility.GetPrefab<LevelData>(name), transform);
     }
 
     private void SpawnPlayers()
     {
         int numPlayers = playerInfos.Count;
 
-        List<SpawnData> spawnDatas = new List<SpawnData>();
-        spawnDatas.Add(new SpawnData(new Vector3(3, 2, 0), Quaternion.Euler(0, 90, 0)));
-        spawnDatas.Add(new SpawnData(new Vector3(10, 2, -7), Quaternion.Euler(0, 45, 0)));
-        spawnDatas.Add(new SpawnData(new Vector3(20, 2, -16), Quaternion.Euler(0, 45, 0)));
-        spawnDatas.Add(new SpawnData(new Vector3(25, 2, -24), Quaternion.Euler(0, 0, 0)));
+        List<Transform> spawnDatas = new List<Transform>();
+
+        for (int i = 0; i < levelData.PlayerSpawnDatas.childCount; i++)
+            spawnDatas.Add(levelData.PlayerSpawnDatas.GetChild(i));
 
         players = new Player[numPlayers];
         Player player;
-        SpawnData spawnData;
-        int i;
+        Transform spawnData;
+        int r;
         for (int id = 0; id < numPlayers; id++)
         {
             Random.InitState(TimeUtility.localTime + id);
 
-            i = Random.Range(0, spawnDatas.Count);
-            spawnData = spawnDatas[i];
-            spawnDatas.RemoveAt(i);
+            r = Random.Range(0, spawnDatas.Count);
+            spawnData = spawnDatas[r];
+            spawnDatas.RemoveAt(r);
 
             player = Instantiate(ResourceUtility.GetPrefab<Player>("Player" + id), spawnData.position, spawnData.rotation, transform);
             player.Initialize(playerInfos[id], spawnData);
@@ -220,7 +205,33 @@ public class GameManager : MonoBehaviour
 
     private void SpawnPillows()
     {
+        pillows = new List<Pillow>();
 
+        Transform spawnDatas = levelData.PillowSpawnDatas.GetChild(0);
+        Transform spawnData;
+        Pillow pillow;
+
+        for (int i = 0; i < spawnDatas.childCount; i++)
+        {
+            spawnData = spawnDatas.GetChild(i);
+            pillow = Instantiate(ResourceUtility.GetPrefab<Pillow>("Pillow"), spawnData.position, spawnData.rotation, transform);
+            pillow.spawnData = spawnData;
+            pillows.Add(pillow);
+        }
+
+        spawnDatas = levelData.PillowSpawnDatas.GetChild(1);
+        
+        for (int i = 0; i < spawnDatas.childCount; i++)
+        {
+            Random.InitState(TimeUtility.localTime + i + 4);
+            if (Random.Range(0, 100) < 50)
+            {
+                spawnData = spawnDatas.GetChild(i);
+                pillow = Instantiate(ResourceUtility.GetPrefab<Pillow>("Pillow"), spawnData.position, spawnData.rotation, transform);
+                pillow.spawnData = spawnData;
+                pillows.Add(pillow);
+            }
+        }
     }
 
     private void ResetPillows()
@@ -232,10 +243,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         if (!Singleton)
-        {
             Singleton = this;
-            DontDestroyOnLoad(gameObject);
-        }
         else if (this != Singleton)
             Destroy(gameObject);
    }

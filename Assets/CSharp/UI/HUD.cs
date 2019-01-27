@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class HUD : UIWindow
 {
     [SerializeField] private Transform playerWidgetList;
+    [SerializeField] private Text countdown;
 
     private Player[] players = null;
     private int numPlayers;
@@ -29,5 +31,10 @@ public class HUD : UIWindow
 
         while (id < maxNumPlayers)
             playerWidgets[id++].Hide();
+    }
+
+    private void Update()
+    {
+        countdown.text = Mathf.RoundToInt(120 - (TimeUtility.localTimeInMilisecond - GameManager.Singleton.MatchStartTime) / 1000f).ToString();
     }
 }

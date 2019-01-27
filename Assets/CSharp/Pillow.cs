@@ -19,7 +19,7 @@ public class Pillow : MonoBehaviour
 
     private Vector3 launchPoint;
 
-    private SpawnData spawnData;
+    public Transform spawnData;
 
     public void ResetAll()
     {
@@ -27,13 +27,13 @@ public class Pillow : MonoBehaviour
         holder = null;
         isInWind = false;
 
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        rigidbody.isKinematic = true;
+        rigidbody.useGravity = true;
+
+        transform.parent = GameManager.Singleton.transform;
         transform.localPosition = spawnData.position;
         transform.rotation = spawnData.rotation;
-    }
-
-    public void Initialize(SpawnData spawnData)
-    {
-        this.spawnData = spawnData;
     }
 
     // Use this for initialization

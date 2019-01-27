@@ -20,6 +20,7 @@ public class LevelEventManager: MonoBehaviour {
         {
             Destroy(gameObject);
         }
+
         DontDestroyOnLoad(gameObject);
     }
 

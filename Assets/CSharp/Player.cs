@@ -148,13 +148,13 @@ public class Player : MonoBehaviour
     private Vector3 moveDirection = Vector3.zero;
     private CharacterController controller;
 
-    public SpawnData SpawnData { get; private set; }
+    public Transform SpawnData { get; private set; }
 
     public EventOnDataChange<int> OnScoreChange { get; private set; }
     public EventOnDataChange<int> OnNumPillowsHeldChange { get; private set; }
 
 
-    public void Initialize(PlayerInfo playerInfo, SpawnData spawnData)
+    public void Initialize(PlayerInfo playerInfo, Transform spawnData)
     {
         Id = playerInfo.id;
         ControllerId = playerInfo.controllerId;

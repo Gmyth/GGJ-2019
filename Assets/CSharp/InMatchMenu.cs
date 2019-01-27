@@ -45,7 +45,7 @@ public class IngameMenu : UIWindow
                     break;
 
                 case 1:
-                    GameManager.Singleton.RestartMatch();
+                    GameManager.Singleton.StartNewMatch();
                     break;
 
                 case 2:
