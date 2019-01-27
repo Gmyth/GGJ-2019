@@ -78,10 +78,12 @@ public class AudioManager : MonoBehaviour {
             SetRandomPitch(tempSource);
             List<AudioClip> clips = new List<AudioClip>();
             foreach (AudioClip c in SoundFX)
-            {            
-                if (c.name.Contains(clipName))
-                    clips.Add(c);
-            }
+                if (c)
+                {            
+                    if (c.name.Contains(clipName))
+                        clips.Add(c);
+                }
+
             if (clips.Count == 0)
                 Debug.Log("[AudioManager]: SoundFX Match Failure ");
             int index = Random.Range(0, clips.Count);

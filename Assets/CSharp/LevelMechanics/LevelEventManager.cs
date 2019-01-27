@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelEventManager: MonoBehaviour {
+public class LevelEventManager: MonoBehaviour
+{
 
     [SerializeField] private LevelEvent[] events;
 
@@ -10,18 +11,18 @@ public class LevelEventManager: MonoBehaviour {
 
     public static LevelEventManager Instance = null;
 
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
+    }
+
     void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
-        }
         else if (Instance != this)
-        {
             Destroy(gameObject);
-        }
-
-        DontDestroyOnLoad(gameObject);
     }
 
     // Use this for initialization

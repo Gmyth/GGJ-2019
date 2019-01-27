@@ -12,15 +12,12 @@ public class Yak : MonoBehaviour {
 
     private MigrateEvent me;
 
-    private void Awake()
-    {
-        me = GameObject.Find("LevelEventManager").GetComponent<MigrateEvent>();
-    }
-
     // Use this for initialization
     void Start()
     {
         currentRouteIndex = 2;
+
+        me = LevelEventManager.Instance.GetComponent<MigrateEvent>();
         transform.LookAt(me.MigratePoints[currentRouteIndex].position);
     }
 
