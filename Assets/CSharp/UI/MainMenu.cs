@@ -10,6 +10,20 @@ public class MainMenu : UIWindow
     private int currentIndex = 0;
     private int maxIndex;
 
+    public override void OnOpen(params object[] args)
+    {
+        maxIndex = list.childCount - 1;
+
+        for (int i = 0; i <= maxIndex; i++)
+        {
+            selections.Add(list.GetChild(i).GetChild(0).gameObject);
+            Deselect(i);
+        }
+
+        currentIndex = Mathf.Clamp((int)args[0], 0, maxIndex);
+        Select(currentIndex);
+    }
+
     private void Select(int index)
     {
         selections[index].SetActive(true);
@@ -38,22 +52,9 @@ public class MainMenu : UIWindow
         }
     }
 
-    bool isUpButtonUp = true;
-    bool isDownButtonUp = true;
-    bool isSubmitButtonUp = true;
-
-    private void Start()
-    {
-        maxIndex = list.childCount - 1;
-
-        for (int i = 0; i <= maxIndex; i++)
-        {
-            selections.Add(list.GetChild(i).GetChild(0).gameObject);
-            Deselect(i);
-        }
-
-        Select(currentIndex);
-    }
+    bool isUpButtonUp = false;
+    bool isDownButtonUp = false;
+    bool isSubmitButtonUp = false;
 
     private void Update()
     {
@@ -94,6 +95,10 @@ public class MainMenu : UIWindow
                     break;
 
                 case 1:
+                    GameManager.Singleton.ShowGameGuide();
+                    break;
+
+                case 2:
                     GameManager.Singleton.QuitGame();
                     break;
             }
