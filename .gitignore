@@ -55,4 +55,3 @@ crashlytics-build.properties
 *.ide
 /Library
 /.vs
-Assets/Animation.meta

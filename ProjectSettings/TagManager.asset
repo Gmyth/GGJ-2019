@@ -6,8 +6,6 @@ TagManager:
   tags:
   - Pillow
   - Boarder
-  - Bouncer
-  - RoutePoint
   layers:
   - Default
   - TransparentFX
