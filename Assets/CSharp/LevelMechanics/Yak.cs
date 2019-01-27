@@ -20,7 +20,7 @@ public class Yak : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        currentRouteIndex = 1;
+        currentRouteIndex = 2;
         transform.LookAt(me.MigratePoints[currentRouteIndex].position);
     }
 
@@ -63,7 +63,7 @@ public class Yak : MonoBehaviour {
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
@@ -73,11 +73,14 @@ public class Yak : MonoBehaviour {
         }
 
         if (other.gameObject.tag == "RoutePoint")
-        {
-            currentRouteIndex++;
-            if (currentRouteIndex < me.MigratePoints.Length) {
-                migrateDirection = (me.MigratePoints[currentRouteIndex].position - transform.position).normalized;
-                transform.LookAt(me.MigratePoints[currentRouteIndex].position);
+        {         
+            if (currentRouteIndex < me.MigratePoints.Length - 1) {
+                if (other.gameObject.name == me.MigratePoints[currentRouteIndex].name)
+                {
+                    currentRouteIndex++;
+                    migrateDirection = (me.MigratePoints[currentRouteIndex].position - transform.position).normalized;
+                    transform.LookAt(me.MigratePoints[currentRouteIndex].position);
+                }               
             }
         }
 
