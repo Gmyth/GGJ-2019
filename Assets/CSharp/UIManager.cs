@@ -93,10 +93,10 @@ public class UIManager : MonoBehaviour
         return uiWindow;
     }
 
-    public void Redraw(string name)
+    public void Redraw(string name, params object[] args)
     {
         if (IsInViewport(name))
-            uiWindowsOpened[name].Redraw();
+            uiWindowsOpened[name].Redraw(args);
     }
 
     public void ForceUpdate(string name)

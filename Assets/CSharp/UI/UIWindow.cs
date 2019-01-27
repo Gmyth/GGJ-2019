@@ -6,7 +6,7 @@ public abstract class UIWindow : MonoBehaviour
 
     public virtual void OnClose() {}
 
-    public virtual void Redraw() {}
+    public virtual void Redraw(params object[] args) {}
 
     public virtual void UpdateAll() {}
 

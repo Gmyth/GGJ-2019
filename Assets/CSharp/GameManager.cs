@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 {
     List<PlayerInfo> playerInfos;
     Player[] players;
+    List<Pillow> pillows;
 
     /// <summary>
     /// The unique instance
@@ -54,9 +55,11 @@ public class GameManager : MonoBehaviour
                 LogUtility.PrintLogFormat("GameManager", "Reset {0}.", value);
 #endif
 
-                //switch (currentGameState)
-                //{
-                //}
+                switch (currentGameState)
+                {
+                    case GameState.Match:
+                        break;
+                }
             }
             else
             {
@@ -69,6 +72,11 @@ public class GameManager : MonoBehaviour
 
                     case GameState.MatchSetup:
                         UIManager.Singleton.Close("MatchSetup");
+                        break;
+
+                    case GameState.Match:
+                        ResetPlayers();
+                        ResetPillows();
                         break;
                 }
 
@@ -153,12 +161,72 @@ public class GameManager : MonoBehaviour
         CurrentGameState = GameState.Match;
     }
 
+    public void RestartMatch()
+    {
+        CurrentGameState = GameState.Match;
+    }
+
+    public void QuitMatch()
+    {
+        CurrentGameState = GameState.MainMenu;
+    }
+
     /// <summary>
     /// Quit the game
     /// </summary>
     public void QuitGame()
     {
         CurrentGameState = GameState.End;
+    }
+
+    private void LoadLevel(string level)
+    {
+        Instantiate(ResourceUtility.GetPrefab<GameObject>(level), transform);
+    }
+
+    private void SpawnPlayers()
+    {
+        int numPlayers = playerInfos.Count;
+
+        List<SpawnData> spawnDatas = new List<SpawnData>();
+        spawnDatas.Add(new SpawnData(new Vector3(3, 2, 0), Quaternion.Euler(0, 90, 0)));
+        spawnDatas.Add(new SpawnData(new Vector3(10, 2, -7), Quaternion.Euler(0, 45, 0)));
+        spawnDatas.Add(new SpawnData(new Vector3(20, 2, -16), Quaternion.Euler(0, 45, 0)));
+        spawnDatas.Add(new SpawnData(new Vector3(25, 2, -24), Quaternion.Euler(0, 0, 0)));
+
+        players = new Player[numPlayers];
+        Player player;
+        SpawnData spawnData;
+        int i;
+        for (int id = 0; id < numPlayers; id++)
+        {
+            Random.InitState(TimeUtility.localTime + id);
+
+            i = Random.Range(0, spawnDatas.Count);
+            spawnData = spawnDatas[i];
+            spawnDatas.RemoveAt(i);
+
+            player = Instantiate(ResourceUtility.GetPrefab<Player>("Player" + id), spawnData.position, spawnData.rotation, transform);
+            player.Initialize(playerInfos[id], spawnData);
+            players[id] = player;
+        }
+    }
+
+    private void ResetPlayers()
+    {
+        for (int id = 0; id < players.Length; id++)
+            players[id].ResetAll();
+    }
+
+    private void SpawnPillows()
+    {
+
+    }
+
+    private void ResetPillows()
+    {
+        foreach (Pillow pillow in pillows)
+            pillow.ResetAll();
     }
 
     private void Awake()
